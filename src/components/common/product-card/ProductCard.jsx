@@ -1,60 +1,70 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import lap2 from "../../../assets/cate/lap2.jpg";
-// import lap2 from "../../../";
-
-const ContainerProductCardStyled = styled(Box)(() => ({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-}));
-
-const CategoryName = styled(Box)(() => ({
-  position: "absolute",
-  top: "20px",
-  left: "20px",
-  borderRadius: "30px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundColor: "#fff",
-  padding: "15px",
-  fontSize: "20px",
-  fontWeight: "500",
-  boxShadow: " rgba(0, 0, 0, 0.1) 0px 4px 12px",
-}));
-
-const WrapImg = styled(Box)(() => ({
-  backgroundColor: "#f6f6f6",
-  overflow: "hidden",
-  borderRadius: "33px",
-  position: "relative",
-}));
-
-const ImgProduct = styled("img")(() => ({
-  width: "100%",
-  height: "100%",
-  objectFit: "cover",
-}));
+import StarRateIcon from "@mui/icons-material/StarRate";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import {
+  ContainerProductCardStyled,
+  DescriptionStyled,
+  FooterProductCard,
+  ImgProduct,
+  ProductNameStyled,
+  PropductPrice,
+  ReducePrice,
+  WrapImg,
+  WrapLike,
+  WrapStar,
+} from "./ProductCardStyled";
 
 const ProductCard = ({
-  categoryName = "",
+  reducePrice,
   imgUrl = "",
   productName,
   description,
   price,
+  oldPrice,
 }) => {
+  const arrayStar = new Array(5).fill(1);
   return (
     <ContainerProductCardStyled>
       <WrapImg>
-        <CategoryName>{categoryName}</CategoryName>
+        <ReducePrice>{reducePrice}%</ReducePrice>
         <ImgProduct src={imgUrl} />
       </WrapImg>
-      <Typography variant="h4">{productName}</Typography>
-      <Typography>{description}</Typography>
-      <Typography>{price}</Typography>
+      <ProductNameStyled variant="h3">{productName}</ProductNameStyled>
+      <Box sx={{ display: "flex" }}>
+        <PropductPrice>{price} đ</PropductPrice>
+        {oldPrice && <PropductPrice oldPrice={true}>{price} đ</PropductPrice>}
+      </Box>
+      <DescriptionStyled>{description}</DescriptionStyled>
+      <FooterProductCard>
+        <WrapStar className="okok">
+          {arrayStar.map((item, index) => (
+            <StarRateIcon
+              key={index}
+              sx={{ width: "15px", height: "15px", color: "#f59e0b" }}
+            />
+          ))}
+        </WrapStar>
+        <WrapLike>
+          <Typography variant="h6" sx={{ fontSize: "12px", color: "#777" }}>
+            Yêu thích
+          </Typography>
+          <FavoriteIcon
+            sx={{
+              width: "20px",
+              height: "30px",
+              marginLeft: "4px",
+              cursor: "pointer",
+              "&:hover": {
+                color: "red",
+              },
+            }}
+          />
+        </WrapLike>
+      </FooterProductCard>
     </ContainerProductCardStyled>
   );
 };
