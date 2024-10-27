@@ -1,7 +1,98 @@
 import React from "react";
-
+import { FooterLink, WrapFooter } from "./Layout.styled";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import { Divider, Grid2, Typography } from "@mui/material";
 const Footer = () => {
-  return <div>Footer</div>;
+  return (
+    <WrapFooter>
+      <Grid2 container padding={0}>
+        <Grid2 size={4.5}>
+          <Typography variant="h4" sx={{ fontWeight: "600", mb: "20px" }}>
+            Tech Shop
+          </Typography>
+          <Grid2 container spacing={2}>
+            <Grid2 size={3}>
+              <TwitterIcon sx={{ width: "40px", height: "40px" }} />
+            </Grid2>
+            <Grid2 size={3}>
+              <InstagramIcon sx={{ width: "40px", height: "40px" }} />
+            </Grid2>
+            <Grid2 size={3}>
+              <FacebookRoundedIcon sx={{ width: "40px", height: "40px" }} />
+            </Grid2>
+            <Grid2 size={3}>
+              <YouTubeIcon sx={{ width: "40px", height: "40px" }} />
+            </Grid2>
+          </Grid2>
+          <Divider />
+          <Typography>
+            Selling premium products, designed to elevate your everyday
+            experience
+          </Typography>
+        </Grid2>
+        <Grid2 size={2.5}>
+          <Grid2 size={12} container spacing={2} columns={1}>
+            <Grid2 size={12} sx={{ mb: "30px" }}>
+              <Typography fontWeight={500}>MENU</Typography>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Home</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Store</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>About</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Articles</FooterLink>
+            </Grid2>
+          </Grid2>
+        </Grid2>
+        <Grid2 size={2.5}>
+          <Grid2 size={12} container spacing={2} columns={1}>
+            <Grid2 size={12} sx={{ mb: "30px" }}>
+              <Typography fontWeight={500}>MENU</Typography>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Home</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Store</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>About</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Articles</FooterLink>
+            </Grid2>
+          </Grid2>
+        </Grid2>
+        <Grid2 size={2.5}>
+          <Grid2 size={12} container spacing={2} columns={1}>
+            <Grid2 size={12} sx={{ mb: "30px" }}>
+              <Typography fontWeight={500}>MENU</Typography>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Home</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Store</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>About</FooterLink>
+            </Grid2>
+            <Grid2 size={12}>
+              <FooterLink>Articles</FooterLink>
+            </Grid2>
+          </Grid2>
+        </Grid2>
+      </Grid2>
+    </WrapFooter>
+  );
 };
 
 export default Footer;

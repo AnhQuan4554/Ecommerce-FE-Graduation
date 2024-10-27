@@ -1,5 +1,6 @@
 import { Box, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
 export const ContainerCustomStyled = styled(Container)(() => ({
   maxWidth: "unset",
@@ -40,4 +41,20 @@ export const SearchStyled = styled(Box)(() => ({
     outline: "none",
     fonSize: "20px",
   },
+}));
+
+/// footer
+export const WrapFooter = styled(Box)(() => ({
+  width: "100%",
+  marginTop: "50px",
+  borderTopLeftRadius: "64px",
+  borderTopRightRadius: "64px",
+  backgroundColor: "rgb(14, 14, 14)",
+  padding: "120px 64px 10px",
+  color: "#fff",
+}));
+
+export const FooterLink = styled(Link)(() => ({
+  color: "#fff",
+  textDecoration: "none",
 }));
