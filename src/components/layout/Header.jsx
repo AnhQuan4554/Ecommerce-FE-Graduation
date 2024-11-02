@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import {
   ContainerCustomStyled,
@@ -22,6 +23,7 @@ import {
   SearchStyled,
   WrapToolTipHeaderStyled,
 } from "./Layout.styled";
+import { Link } from "react-router-dom";
 
 const pages = ["Store", "About", "Support", "Contact"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -48,7 +50,12 @@ const Header = () => {
     <AppBar position="static">
       <ContainerCustomStyled maxWidth={false} disableGutters={true}>
         <Toolbar disableGutters>
-          <LogoStyled src={logo} sx={{ display: { xs: "none", md: "flex" } }} />
+          <Link to={"/"}>
+            <LogoStyled
+              src={logo}
+              sx={{ display: { xs: "none", md: "flex" } }}
+            />
+          </Link>
           <WrapToolTipHeaderStyled
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
@@ -111,10 +118,48 @@ const Header = () => {
             </SearchStyled>
           </WrapToolTipHeaderStyled>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
+            <Tooltip title="Account information">
+              <Box
+                sx={{
+                  display: "flex",
+                  minWidth: "300px",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  "& a": {
+                    textDecoration: "none",
+                    textAlign: "center",
+                    boxSizing: "border-box",
+                  },
+                }}
+              >
+                <Link
+                  to={"/login"}
+                  sx={{
+                    backgroundColor: "#ea4750",
+                    padding: "10px",
+                    marginRight: "10px",
+                  }}
+                >
+                  <AccountCircleIcon />
+                  <Typography sx={{ textDecoration: "none" }}>
+                    Đăng nhập
+                  </Typography>
+                </Link>
+                <Link
+                  to={"/register"}
+                  sx={{
+                    backgroundColor: "#ea4750",
+                    padding: "10px",
+                    marginRight: "10px",
+                  }}
+                >
+                  <AccountCircleIcon />
+                  <Typography>Đăng ký</Typography>
+                </Link>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Box>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
