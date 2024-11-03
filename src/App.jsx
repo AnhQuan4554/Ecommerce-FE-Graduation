@@ -6,8 +6,6 @@ import { Outlet } from "react-router-dom";
 import Layout from "./components/layout";
 
 function App() {
-  console.log(import.meta.env.VITE_TEST_ENV);
-  console.log(import.meta.env.VITE_API_KEY);
   return (
     <Layout>
       <Outlet />
