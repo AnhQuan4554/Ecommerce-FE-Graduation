@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const USERS_URL = import.meta.env.VITE_USERS_URL;
-console.log("USERS_URL++", USERS_URL);
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
@@ -15,11 +15,13 @@ export const userApi = createApi({
       }),
     }),
     register: builder.mutation({
-      query: (data) => ({
-        url: `${USERS_URL}`,
-        method: "POST",
-        body: data,
-      }),
+      query: (data) => {
+        return {
+          url: `${USERS_URL}`,
+          method: "POST",
+          body: data,
+        };
+      },
     }),
     logout: builder.mutation({
       query: () => ({

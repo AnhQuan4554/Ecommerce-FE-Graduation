@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../service/user";
 import { setCredentials } from "../../redux/user/userSlice";
+import { toast } from "react-toastify";
 
 const TextFieldStyled = styled(TextField)(() => ({
   width: "100%",
@@ -21,10 +22,10 @@ const Login = () => {
     try {
       const res = await login({ email, password }).unwrap();
       console.log(res);
-      // dispatch(setCredentials({ ...res }));
-      // navigate("/");
+      dispatch(setCredentials({ ...res }));
+      navigate("/");
     } catch (err) {
-      // toast.error(err?.data.error || err.error);
+      toast.error(err?.data.error || err.error);
     }
   };
   return (
@@ -63,7 +64,7 @@ const Login = () => {
               width: "100%",
             }}
           >
-            {isLoading ? "Đăng nhập..." : "Sign Đăng nhập"}
+            {isLoading ? "Đăng nhập..." : " Đăng nhập"}
           </Button>
         </Grid2>
       </Grid2>
