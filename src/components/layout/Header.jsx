@@ -26,7 +26,7 @@ import {
 import { Link } from "react-router-dom";
 
 const pages = ["Store", "About", "Support", "Contact"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Account", "Dashboard", "Products", "Logout"];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -179,9 +179,17 @@ const Header = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
+                  <Link
+                    style={{
+                      textAlign: "center",
+                      textDecoration: "none",
+                      color: "black",
+                      fontSize: "20px",
+                    }}
+                    to={`/admin/${setting.toLowerCase()}`}
+                  >
                     {setting}
-                  </Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>

@@ -1,7 +1,7 @@
 import { Button, Container, Grid2, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../service/user";
 import { setCredentials } from "../../redux/user/userSlice";
@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [login, { isLoading, error }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const submitHandler = async (e) => {
     e.preventDefault();

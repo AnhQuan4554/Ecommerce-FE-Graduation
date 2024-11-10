@@ -30,7 +30,7 @@ const ProductCard = ({
   return (
     <ContainerProductCardStyled>
       <WrapImg>
-        <ReducePrice>{reducePrice}%</ReducePrice>
+        {reducePrice > 0 && <ReducePrice>{reducePrice}%</ReducePrice>}
         <ImgProduct src={imgUrl} />
       </WrapImg>
       <ProductNameStyled variant="h3">{productName}</ProductNameStyled>

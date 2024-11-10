@@ -9,6 +9,7 @@ import DetailProduct from "./pages/Production/Detail-Product/DetailProduct";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Login/Register";
+import AdminProductList from "./pages/Production/admin-product/AdminProductList";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,10 @@ export const router = createBrowserRouter(
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/product-detail/:id" element={<DetailProduct />} />
+      {/* admin */}
+      <Route path="/admin/products" element={<AdminProductList />}>
+        <Route path="products" element={<DetailProduct />} />
+      </Route>
     </Route>
   )
 );

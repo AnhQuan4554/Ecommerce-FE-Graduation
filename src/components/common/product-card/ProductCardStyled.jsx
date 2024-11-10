@@ -13,6 +13,7 @@ export const ContainerProductCardStyled = styled(Box)(() => ({
     "0 1px 2px 0 rgba(60, 64, 67, .1), 0 2px 6px 2px rgba(60, 64, 67, .15)",
   backgroundColor: "#fff",
   cursor: "pointer",
+  height: "400px",
 }));
 
 export const ReducePrice = styled(Box)(() => ({
