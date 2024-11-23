@@ -15,6 +15,7 @@ import {
 } from "../../../service/product";
 import { toast } from "react-toastify";
 import { useFetchCategoriesQuery } from "../../../service/category";
+import { brandData } from "./BrandData";
 
 const style = {
   position: "absolute",
@@ -72,10 +73,6 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
     }
   };
 
-  const top100Films = [
-    { label: "The Shawshank Redemption", value: 1994 },
-    { label: "The Godfather", value: 1972 },
-  ];
   useEffect(() => {
     if (!categoriesQuery.isLoading) {
       const data = categoriesQuery.currentData.map((item) => ({
@@ -199,7 +196,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
 
         <Autocomplete
           disablePortal
-          options={top100Films}
+          options={brandData}
           loading={categoriesQuery.isLoading}
           onChange={(e, newValue) =>
             setNewProduct({ ...newProduct, brand: newValue.value })

@@ -15,12 +15,14 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
 import AddProductModel from "./AddProductModel";
+import EditProduct from "./EditProduct";
 
 const AdminProductList = () => {
   const { currentData, isLoading, refetch } = useGetAllProductsQuery();
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [deleteProduct] = useDeleteProductMutation();
   const [openCategory, setOpenCategory] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },
@@ -80,7 +82,7 @@ const AdminProductList = () => {
           <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
             <Button
               disabled={!rowSelectionModel.includes(item.id)}
-              // onClick={() => setOpenEdit(true)}
+              onClick={handleOpenEditModal}
             >
               <ModeEditIcon sx={{ width: "30px", height: "30px", mr: "6px" }} />
             </Button>
@@ -95,7 +97,13 @@ const AdminProductList = () => {
       },
     },
   ];
-
+  const handleOpenEditModal = () => {
+    if (rowSelectionModel.length > 1) {
+      toast.warning("Chỉ được chỉnh sửa từng sản phẩm một");
+      return;
+    }
+    setOpenEdit(true);
+  };
   const handleDeleteProduct = async () => {
     try {
       let answer = window.confirm(
@@ -142,7 +150,7 @@ const AdminProductList = () => {
                 setOpenCategory(true);
               }}
             >
-              {"Add Category"}
+              {"Thêm sản phẩm mới"}
             </Button>
             <Button
               onClick={handleDeleteProduct}
@@ -170,17 +178,14 @@ const AdminProductList = () => {
           open={openCategory}
           setOpen={setOpenCategory}
           refetch={refetch}
+          id={rowSelectionModel[0]}
         />
-        {/* <EditCategory
+        <EditProduct
           open={openEdit}
           setOpen={setOpenEdit}
-          refetch={refetch}
-          categoryId={rowSelectionModel[0]}
-          categoryEdited={
-            currentData &&
-            currentData.find((item) => item._id === rowSelectionModel[0])
-          }
-        /> */}
+          refetchGetList={refetch}
+          id={rowSelectionModel[0]}
+        />
       </Box>
 
       {isLoading ? (

@@ -52,10 +52,10 @@ export const productApi = createApi({
     }),
 
     updateProduct: builder.mutation({
-      query: ({ productId, formData }) => ({
+      query: ({ productId, productData }) => ({
         url: `${PRODUCT_URL}/${productId}`,
         method: "PUT",
-        body: formData,
+        body: productData,
       }),
     }),
 
@@ -108,4 +108,5 @@ export const {
   useCreateReviewMutation,
   useGetTopProductsQuery,
   useUploadProductImageMutation,
+  useUpdateProductMutation,
 } = productApi;
