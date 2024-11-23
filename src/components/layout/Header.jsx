@@ -26,7 +26,14 @@ import {
 import { Link } from "react-router-dom";
 
 const pages = ["Store", "About", "Support", "Contact"];
-const settings = ["Profile", "Account", "Dashboard", "Products", "Logout"];
+const settings = [
+  "Profile",
+  "Account",
+  "Dashboard",
+  "Products",
+  "Category",
+  "Logout",
+];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -177,6 +184,7 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              {/* authory update code handlle for setting */}
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Link

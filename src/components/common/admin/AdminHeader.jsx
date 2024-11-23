@@ -3,15 +3,25 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import AddProductModel from "../../../pages/Production/admin-product/AddProductModel";
+import { useLocation } from "react-router-dom";
 export const ContainerBtnAction = styled(Box)(() => ({
   display: "flex",
   gap: "50px",
   alignItems: "center",
 }));
 
-const AdminHeader = ({ title, buttonName, rowSelectionModel }) => {
+const AdminHeader = ({
+  refetch,
+  title,
+  buttonName,
+  rowSelectionModel,
+  handleDelete,
+}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
+  const location = useLocation();
+  const parts = location.pathname.split("/");
+  const endpoint = parts[parts.length - 1];
   return (
     <Box
       sx={{
@@ -41,6 +51,10 @@ const AdminHeader = ({ title, buttonName, rowSelectionModel }) => {
             {buttonName}
           </Button>
           <Button
+            onClick={() => {
+              handleDelete();
+              setOpen(false);
+            }}
             disabled={rowSelectionModel?.length === 0}
             sx={{
               display: "flex",
@@ -60,7 +74,11 @@ const AdminHeader = ({ title, buttonName, rowSelectionModel }) => {
           </Button>
         </ContainerBtnAction>
       </Box>
-      <AddProductModel open={open} setOpen={setOpen} />
+      <AddProductModel
+        open={open && endpoint === "products"}
+        setOpen={setOpen}
+        refetch={refetch}
+      />
     </Box>
   );
 };

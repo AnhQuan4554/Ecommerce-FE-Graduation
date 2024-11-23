@@ -68,9 +68,12 @@ export const productApi = createApi({
     }),
 
     deleteProduct: builder.mutation({
-      query: (productId) => ({
-        url: `${PRODUCT_URL}/${productId}`,
+      query: (productIds) => ({
+        url: `${PRODUCT_URL}/delete`,
         method: "DELETE",
+        body: {
+          ids: productIds,
+        },
       }),
       providesTags: ["Product"],
     }),

@@ -1,92 +1,64 @@
-import AdminHeader, {
-  ContainerBtnAction,
-} from "../../../components/common/admin/AdminHeader";
-import ContainerAdmin from "../../../components/common/admin/ContainerAdmin";
-import Box from "@mui/material/Box";
-import {
-  useDeleteProductMutation,
-  useGetAllProductsQuery,
-} from "../../../service/product";
-import { Button, CircularProgress, Typography } from "@mui/material";
-import ImgProductTable from "../../../components/common/admin/ImgProduct";
-import { useState } from "react";
-import AdminTable from "../../../components/common/admin/AdminTable";
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { toast } from "react-toastify";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from "react-toastify";
-import AddProductModel from "./AddProductModel";
+import ContainerAdmin from "../../../components/common/admin/ContainerAdmin";
+import {
+  useDeleteCategoryMutation,
+  useFetchCategoriesQuery,
+} from "../../../service/category";
+import AdminTable from "../../../components/common/admin/AdminTable";
+import AddCategory from "./AddCategory";
+import EditCategory from "./EditCategory";
 
-const AdminProductList = () => {
-  const { currentData, isLoading, refetch } = useGetAllProductsQuery();
+const ContainerBtnAction = styled(Box)(() => ({
+  display: "flex",
+  gap: "50px",
+  alignItems: "center",
+}));
+const AdminCategory = () => {
+  const { currentData, isLoading, refetch } = useFetchCategoriesQuery();
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
-  const [deleteProduct] = useDeleteProductMutation();
-  const [openCategory, setOpenCategory] = useState(false);
+  const [deleteCategory] = useDeleteCategoryMutation();
+  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
 
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },
     {
-      field: "image",
-      headerName: "Ảnh sản phẩm",
-      sortable: false,
-      width: 200,
-      editable: true,
-      renderCell: (params) => {
-        return params && <ImgProductTable imgUrl={params.value[0]} />;
-      },
-    },
-    {
       field: "name",
-      headerName: "Tên sản phẩm",
-      width: 250,
-
-      editable: true,
-    },
-    {
-      field: "category",
-      headerName: "Loại hàng",
-      width: 200,
-      editable: true,
-      valueGetter: (value) => value && value.name,
-    },
-    {
-      field: "countInStock",
-      headerName: "Sản phẩm trong kho",
+      headerName: "Tên loại ",
       description: "",
-      sortable: false,
-      width: 160,
+      // sortable: false,
+      width: 260,
     },
     {
-      field: "price",
-      headerName: "Giá",
-      type: "number",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "rating",
-      headerName: "Đánh giá",
-      type: "number",
-      width: 200,
-      editable: true,
+      field: "description",
+      headerName: "Mô tả",
+      description: "",
+      // sortable: false,
+      width: 460,
     },
     {
       field: "action",
-      headerName: "Chỉnh sửa",
+      headerName: "Hành động",
+      description: "",
       sortable: false,
-      width: 110,
-      editable: true,
+      width: 360,
       renderCell: (item) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
             <Button
               disabled={!rowSelectionModel.includes(item.id)}
-              // onClick={() => setOpenEdit(true)}
+              onClick={() => setOpenEdit(true)}
             >
               <ModeEditIcon sx={{ width: "30px", height: "30px", mr: "6px" }} />
             </Button>
             <Button
               disabled={!rowSelectionModel.includes(item.id)}
-              onClick={handleDeleteProduct}
+              onClick={handleDeleteCategory}
             >
               <DeleteIcon sx={{ width: "30px", height: "30px" }} />
             </Button>
@@ -96,21 +68,21 @@ const AdminProductList = () => {
     },
   ];
 
-  const handleDeleteProduct = async () => {
+  const handleDeleteCategory = async () => {
     try {
-      let answer = window.confirm(
-        "Are you sure you want to delete this product?"
-      );
-      if (!answer) return;
+      const result = await deleteCategory(rowSelectionModel).unwrap();
 
-      const { data } = await deleteProduct(rowSelectionModel);
-
-      toast.success(`"${data.message}" is deleted`);
-      // refetch data
-      await refetch();
-    } catch (err) {
-      console.log(err);
-      toast.error("Delete failed. Try again.");
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        await refetch();
+        toast.success(`${result.message}`);
+        setRowSelectionModel([]);
+        setOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Category delection failed. Tray again.");
     }
   };
   return (
@@ -124,7 +96,7 @@ const AdminProductList = () => {
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 500 }}>
-          {"Product Lists"}
+          {"Category Lists"}
         </Typography>
         <Box>
           <ContainerBtnAction>
@@ -139,13 +111,13 @@ const AdminProductList = () => {
                 padding: "10px",
               }}
               onClick={() => {
-                setOpenCategory(true);
+                setOpen(true);
               }}
             >
               {"Add Category"}
             </Button>
             <Button
-              onClick={handleDeleteProduct}
+              onClick={handleDeleteCategory}
               disabled={rowSelectionModel?.length === 0}
               sx={{
                 display: "flex",
@@ -166,12 +138,8 @@ const AdminProductList = () => {
           </ContainerBtnAction>
         </Box>
 
-        <AddProductModel
-          open={openCategory}
-          setOpen={setOpenCategory}
-          refetch={refetch}
-        />
-        {/* <EditCategory
+        <AddCategory open={open} setOpen={setOpen} refetch={refetch} />
+        <EditCategory
           open={openEdit}
           setOpen={setOpenEdit}
           refetch={refetch}
@@ -180,9 +148,8 @@ const AdminProductList = () => {
             currentData &&
             currentData.find((item) => item._id === rowSelectionModel[0])
           }
-        /> */}
+        />
       </Box>
-
       {isLoading ? (
         <CircularProgress
           sx={{
@@ -206,4 +173,4 @@ const AdminProductList = () => {
   );
 };
 
-export default AdminProductList;
+export default AdminCategory;
