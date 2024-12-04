@@ -23,9 +23,12 @@ import {
   SearchStyled,
   WrapToolTipHeaderStyled,
 } from "./Layout.styled";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLogoutMutation } from "../../service/user";
+import { logout } from "../../redux/userSlice";
 
-const pages = ["Store", "About", "Support", "Contact"];
+const pages = ["Đơn hàng", "Về chúng tôi", "Hỗ trợ", "Liên hệ"];
 const settings = [
   "Profile",
   "Account",
@@ -34,10 +37,27 @@ const settings = [
   "Category",
   "Logout",
 ];
+const convertLink = {
+  "Tài khoản": "account",
+  "Thống kê cửa hàng": "dashboard",
+  "Sản phẩm": "products",
+  "Phân loại": "category",
+  "Đăng xuất": "logout",
+};
 
 const Header = () => {
+  const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [logoutApiCall] = useLogoutMutation();
+
+  const settings = React.useMemo(() => {
+    return userInfo?.isAdmin
+      ? ["Tài khoản", "Thống kê cửa hàng", "Sản phẩm", "Phân loại", "Đăng xuất"]
+      : ["Tài khoản", "Đăng xuất"];
+  }, [userInfo?.isAdmin]);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -51,6 +71,15 @@ const Header = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -130,7 +159,7 @@ const Header = () => {
                 sx={{
                   display: "flex",
                   minWidth: "300px",
-                  justifyContent: "space-between",
+                  justifyContent: userInfo ? "flex-end" : "space-between",
                   alignItems: "center",
                   "& a": {
                     textDecoration: "none",
@@ -139,33 +168,41 @@ const Header = () => {
                   },
                 }}
               >
-                <Link
-                  to={"/login"}
-                  sx={{
-                    backgroundColor: "#ea4750",
-                    padding: "10px",
-                    marginRight: "10px",
-                  }}
-                >
-                  <AccountCircleIcon />
-                  <Typography sx={{ textDecoration: "none" }}>
-                    Đăng nhập
-                  </Typography>
-                </Link>
-                <Link
-                  to={"/register"}
-                  sx={{
-                    backgroundColor: "#ea4750",
-                    padding: "10px",
-                    marginRight: "10px",
-                  }}
-                >
-                  <AccountCircleIcon />
-                  <Typography>Đăng ký</Typography>
-                </Link>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
+                {userInfo ? (
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                ) : (
+                  <>
+                    <Link
+                      to={"/login"}
+                      sx={{
+                        backgroundColor: "#ea4750",
+                        padding: "10px",
+                        marginRight: "10px",
+                      }}
+                    >
+                      <AccountCircleIcon />
+                      <Typography sx={{ textDecoration: "none" }}>
+                        Đăng nhập
+                      </Typography>
+                    </Link>
+                    <Link
+                      to={"/register"}
+                      sx={{
+                        backgroundColor: "#ea4750",
+                        padding: "10px",
+                        marginRight: "10px",
+                      }}
+                    >
+                      <AccountCircleIcon />
+                      <Typography>Đăng ký</Typography>
+                    </Link>
+                  </>
+                )}
               </Box>
             </Tooltip>
             <Menu
@@ -188,13 +225,14 @@ const Header = () => {
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Link
+                    onClick={convertLink[setting] == "logout" && logoutHandler}
                     style={{
                       textAlign: "center",
                       textDecoration: "none",
                       color: "black",
                       fontSize: "20px",
                     }}
-                    to={`/admin/${setting.toLowerCase()}`}
+                    to={`/admin/${convertLink[setting]}`}
                   >
                     {setting}
                   </Link>

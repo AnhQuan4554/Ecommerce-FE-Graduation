@@ -35,6 +35,7 @@ const BestSeller = () => {
             currentData.map((item) => (
               <Grid2 key={item?._id} size={2.4}>
                 <ProductCard
+                  productId={item?._id}
                   reducePrice={item?.reducePrice}
                   imgUrl={item?.image[0]}
                   productName={item?.name}
@@ -44,51 +45,6 @@ const BestSeller = () => {
                 />
               </Grid2>
             ))}
-
-          <Grid2 size={2.4}>
-            <ProductCard
-              reducePrice={12}
-              imgUrl={phone02}
-              productName={"iPhone 16 Pro 128GB | Chính hãng VN/A"}
-              description={
-                "Hiệu năng mạnh mẽ với chip MediaTek Dimensity 8300-Ultra - Mang lại hiệu năng tốt cho các tác vụ hàng ngày, từ lướt web, xem video đến chơi game với độ ổn định cao."
-              }
-              price={"10000"}
-            />
-          </Grid2>
-          <Grid2 size={2.4}>
-            <ProductCard
-              reducePrice={12}
-              imgUrl={phone03}
-              productName={"iPhone 16 Pro Max 256GB | Chính hãng VN/A"}
-              description={
-                "Hiệu năng mạnh mẽ với chip MediaTek Dimensity 8300-Ultra - Mang lại hiệu năng tốt cho các tác vụ hàng ngày, từ lướt web, xem video đến chơi game với độ ổn định cao."
-              }
-              price={"10000"}
-            />
-          </Grid2>
-          <Grid2 size={2.4}>
-            <ProductCard
-              reducePrice={12}
-              imgUrl={phone01}
-              productName={"Samsung Galaxy Z Flip6"}
-              description={
-                "Hiệu năng mạnh mẽ với chip MediaTek Dimensity 8300-Ultra - Mang lại hiệu năng tốt cho các tác vụ hàng ngày, từ lướt web, xem video đến chơi game với độ ổn định cao."
-              }
-              price={"10000"}
-            />
-          </Grid2>
-          <Grid2 size={2.4}>
-            <ProductCard
-              reducePrice={12}
-              imgUrl={phone01}
-              productName={"Samsung Galaxy Z Flip6"}
-              description={
-                "Hiệu năng mạnh mẽ với chip MediaTek Dimensity 8300-Ultra - Mang lại hiệu năng tốt cho các tác vụ hàng ngày, từ lướt web, xem video đến chơi game với độ ổn định cao."
-              }
-              price={"10000"}
-            />
-          </Grid2>
         </Grid2>
       </ContainerBestSeller>
     </Box>

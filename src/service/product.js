@@ -16,12 +16,21 @@ export const productApi = createApi({
       providesTags: ["Products"],
     }),
     getProductsByKey: builder.query({
-      query: ({ keyword }) => ({
+      query: ({ brand }) => ({
         url: `${PRODUCT_URL}`,
-        params: { keyword },
+        body: { brand }, // cần sửa lại là param
       }),
       keepUnusedDataFor: 5,
       providesTags: ["Products"],
+    }),
+
+    getProductsByBrand: builder.mutation({
+      query: (productData) => ({
+        url: `${PRODUCT_URL}/brand`,
+        method: "POST",
+        body: productData,
+      }),
+      invalidatesTags: ["Product"],
     }),
 
     getProductById: builder.query({
@@ -103,6 +112,7 @@ export const {
   useGetProductsByKeyQuery,
   useGetProductByIdQuery,
   useGetAllProductsQuery,
+  useGetProductsByBrandMutation,
   useCreateProductMutation,
   useDeleteProductMutation,
   useCreateReviewMutation,

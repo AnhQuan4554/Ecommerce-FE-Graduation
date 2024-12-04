@@ -1,4 +1,15 @@
 export const brandData = [
-  { label: "The Shawshank Redemption", value: 1994 },
-  { label: "The Godfather", value: 1972 },
+  { label: "Apple", value: 1 },
+  { label: "Samsung", value: 2 },
+  { label: "Xiaomi", value: 3 },
+  { label: "OPPO", value: 4 },
+  { label: "Vivo", value: 5 },
+  { label: "Nokia", value: 6 },
+  { label: "Mackbook", value: 7 },
+  { label: "Asus", value: 8 },
+  { label: "MSI", value: 9 },
+  { label: "Lenovo", value: 10 },
+  { label: "HP", value: 11 },
+  { label: "Acer", value: 12 },
+  { label: "Dell", value: 13 },
 ];

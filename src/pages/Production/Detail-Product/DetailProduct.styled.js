@@ -19,12 +19,22 @@ export const WrapProductInforStyled = styled(Box)(() => ({
   border: "1px solid black",
   borderRadius: "15px",
   padding: "20px",
+
+  "& button": {
+    color: "red",
+    background: "inherit",
+  },
+
+  "& .slick-prev:before": {
+    color: "red",
+  },
+
+  "& .slick-next:before": {
+    color: "red",
+  },
 }));
 
 export const WrapProductImg = styled(Box)(() => ({
-  // width: "400px",
-  // height: "400px",
-
   display: "flex !important",
   alignItems: "center",
   justifyContent: "center",
@@ -41,7 +51,7 @@ export const WrapInforSpecificationStyled = styled(Box)(() => ({
 }));
 
 export const PriceList = styled(Grid2)(() => ({}));
-export const PriceItem = styled(Grid2)(() => ({
+export const PriceItem = styled(Grid2)(({ isHighlighted }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -50,6 +60,10 @@ export const PriceItem = styled(Grid2)(() => ({
   borderRadius: "10px",
   padding: "4px 5px",
   width: "100%",
+  cursor: "pointer",
+  marginBottom: "20px",
+  backgroundColor: isHighlighted ? "rgba(255, 192, 203, 0.5)" : "",
+  borderColor: isHighlighted ? "red" : "",
 }));
 export const WrapPromotion = styled(Grid2)(() => ({
   borderTopLeftRadius: "10px",

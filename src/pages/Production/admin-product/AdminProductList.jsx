@@ -75,7 +75,7 @@ const AdminProductList = () => {
       field: "action",
       headerName: "Chỉnh sửa",
       sortable: false,
-      width: 110,
+      width: 200,
       editable: true,
       renderCell: (item) => {
         return (

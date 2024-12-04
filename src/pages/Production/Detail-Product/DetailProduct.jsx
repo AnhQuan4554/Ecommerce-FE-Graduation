@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   AdditionalProductImages,
@@ -17,45 +17,59 @@ import {
   WrapPromotion,
   WrapPromotionContent,
 } from "./DetailProduct.styled";
-import { Box, Grid2, Typography } from "@mui/material";
+import { Box, Grid2, TextField, Typography } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import imgDetail01 from "../../../assets/detail/imgDetail01.jpg";
-import imgDetail02 from "../../../assets/detail/imgDetail02.jpg";
-import imgDetail03 from "../../../assets/detail/imgDetail03.jpg";
-import imgDetail04 from "../../../assets/detail/imgDetail04.jpg";
 import ButtonAction from "./ButtonAction";
+import {
+  useGetProductByIdQuery,
+  useGetProductsByBrandMutation,
+} from "../../../service/product";
+import { formatCurrency } from "../../../utils/formatPrice";
+import RelatedBrandProducts from "./RelatedBrandProducts";
+import ModalShipping from "../../../components/common/modal-shipping/ModalShipping";
+
+var settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: false,
+  autoplaySpeed: 1500,
+};
 
 const DetailProduct = () => {
   const { id } = useParams();
-  var settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 1500,
-  };
-  const priceItems = [
-    { size: "12GB 1TB", price: "52.990.000 đ" },
-    { size: "8GB 512GB", price: "42.990.000 đ" },
-    { size: "6GB 256GB", price: "32.990.000 đ" },
-  ];
+  const {
+    currentData: productDetailData,
+    isLoading,
+    refetch,
+  } = useGetProductByIdQuery(id);
+  const [productPrice, setProductPrice] = useState(
+    productDetailData && productDetailData?.price
+  );
+  const [quantity, setQuantity] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
 
-  const arrImg = [imgDetail01, imgDetail02, imgDetail03, imgDetail04];
+  const handleChangeOptions = (price) => {
+    setProductPrice(price);
+  };
+  const handleSubmit = () => {
+    // const dataSubmit = {...productDetailData,itemsPrice};
+  };
   return (
     <div>
       <ContainerCustomStyled>
         <ProductNameStyled mt={"20px"} mb={"20px"}>
-          Samsung Galaxy Z Fold6 12GB 256GB
+          {productDetailData?.name}
         </ProductNameStyled>
         <Grid2 container spacing={3}>
           <Grid2 size={7}>
             <WrapProductInforStyled>
               <Slider {...settings}>
-                {arrImg.map((item, index) => (
+                {productDetailData?.image.map((item, index) => (
                   <WrapProductImg key={index}>
                     <ProductImg src={item} />
                   </WrapProductImg>
@@ -63,7 +77,7 @@ const DetailProduct = () => {
               </Slider>
             </WrapProductInforStyled>
             <AdditionalProductImages container spacing={2} mt={"20px"}>
-              {arrImg.map((item, index) => (
+              {productDetailData?.image.map((item, index) => (
                 <Grid2 key={index} size={3}>
                   <AdditionalProductImagesItem src={item} />
                 </Grid2>
@@ -73,19 +87,30 @@ const DetailProduct = () => {
           <Grid2 size={5}>
             <WrapInforSpecificationStyled>
               <PriceList container spacing={2}>
-                {priceItems.map((item, index) => (
+                {productDetailData?.options.map((item, index) => (
                   <Grid2 key={index} size={4}>
-                    <PriceItem>
+                    <PriceItem
+                      onClick={() => handleChangeOptions(item?.price)}
+                      isHighlighted={item.price == productPrice}
+                    >
                       <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
-                        {item.size}
+                        {item.name}
                       </Typography>
                       <Typography sx={{ fontSize: "18px" }}>
-                        {item.price}
+                        {formatCurrency(item.price)}
                       </Typography>
                     </PriceItem>
                   </Grid2>
                 ))}
               </PriceList>
+              <TextField
+                sx={{ mb: "20px" }}
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                required
+                type="number"
+                label="Nhập số lượng mua"
+              />
               <WrapPromotion>
                 <PromotionHeaderStyled>
                   <Box sx={{ width: "30px", height: "30px" }}>
@@ -138,10 +163,20 @@ const DetailProduct = () => {
                   </Box>
                 </WrapPromotionContent>
               </WrapPromotion>
-              <ButtonAction />
+              {/* Button handle action */}
+              <ButtonAction setOpenModal={setOpenModal} />
             </WrapInforSpecificationStyled>
           </Grid2>
         </Grid2>
+        <Grid2 container spacing={2}>
+          <RelatedBrandProducts brand={productDetailData?.brand} />
+        </Grid2>
+        <ModalShipping
+          open={openModal}
+          setOpen={setOpenModal}
+          totalPay={productPrice * quantity}
+          productDetailData={productDetailData}
+        />
       </ContainerCustomStyled>
     </div>
   );

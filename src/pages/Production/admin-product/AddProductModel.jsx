@@ -39,6 +39,7 @@ const TextFieldStyled = styled(TextField)(() => ({
 }));
 
 const AddProductModel = ({ open, setOpen, refetch }) => {
+  const [numberOfOptions, setNumberOfOptions] = useState(0);
   const [newProduct, setNewProduct] = useState({
     name: "",
     image: [],
@@ -49,15 +50,24 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
     description: "",
     price: "",
     countInStock: 0,
+    options: null,
   });
   const [imageUrl, setImageUrl] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [optionsState, setOptionsState] = useState([]);
 
   const [uploadProductImage] = useUploadProductImageMutation();
   const [createProduct, { reset }] = useCreateProductMutation();
   const handleClose = () => setOpen(false);
   const categoriesQuery = useFetchCategoriesQuery();
-
+  const handleOptionChange = (index, field, value) => {
+    const updatedOptions = [...optionsState];
+    updatedOptions[index] = {
+      ...updatedOptions[index],
+      [field]: value,
+    };
+    setOptionsState(updatedOptions);
+  };
   const uploadFileHandler = async (e) => {
     const formData = new FormData();
     Array.from(e.target.files).forEach((file) => {
@@ -97,7 +107,9 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
       productData.append("quantity", newProduct.quantity || 0);
       productData.append("brand", newProduct.brand);
       productData.append("countInStock", newProduct.countInStock);
-
+      productData.append("options", JSON.stringify(optionsState));
+      console.log("optionsState++", JSON.stringify(optionsState));
+      console.log("new product++", productData);
       const { data } = await createProduct(productData);
 
       if (data.error) {
@@ -236,6 +248,33 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
           type="number"
           label="Nhập số lượng nhập về"
         />
+        <TextFieldStyled
+          onChange={(e) => setNumberOfOptions(e.target.value)}
+          required
+          type="number"
+          label="Nhập số lượng cấu hình"
+        />
+        {numberOfOptions &&
+          Array.from({ length: numberOfOptions }).map((_, index) => (
+            <div key={index}>
+              <TextFieldStyled
+                onChange={(e) =>
+                  handleOptionChange(index, "name", e.target.value)
+                }
+                required
+                label={`Nhập tên cấu hình ${index + 1}`}
+              />
+              <TextFieldStyled
+                onChange={(e) =>
+                  handleOptionChange(index, "price", Number(e.target.value))
+                }
+                type="number"
+                required
+                label={`Nhập giá cho cấu hình ${index + 1}`}
+              />
+            </div>
+          ))}
+
         <Button onClick={handleSubmit}>Tạo sản phẩm mới</Button>
       </Box>
     </Modal>

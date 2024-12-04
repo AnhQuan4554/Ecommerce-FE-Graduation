@@ -5,11 +5,14 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./Routes.jsx";
 import { Provider } from "react-redux";
 import { store } from "./store.js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <PayPalScriptProvider>
+        <RouterProvider router={router} />
+      </PayPalScriptProvider>
     </Provider>
   </StrictMode>
 );

@@ -36,12 +36,16 @@ const OrderBtnStyled = styled(Button)(() => ({
   width: "60px",
 }));
 
-const ButtonAction = () => {
+const ButtonAction = ({ setOpenModal }) => {
   return (
     <WrapBtnAction>
       <Grid2 container spacing={2}>
         <Grid2 size={10}>
-          <BuyNowBtnStyled>
+          <BuyNowBtnStyled
+            onClick={() => {
+              setOpenModal(true);
+            }}
+          >
             <Typography variant="h5" sx={{ fontWeight: "500" }}>
               Mua ngay
             </Typography>
@@ -49,7 +53,11 @@ const ButtonAction = () => {
           </BuyNowBtnStyled>
         </Grid2>
         <Grid2 size={2}>
-          <OrderBtnStyled>
+          <OrderBtnStyled
+            onClick={() => {
+              setOpenModal(true);
+            }}
+          >
             <AddShoppingCartIcon
               sx={{ fontSize: "30px", color: "#e04040", mb: "2px" }}
             />

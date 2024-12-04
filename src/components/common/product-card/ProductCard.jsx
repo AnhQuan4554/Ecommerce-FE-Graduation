@@ -17,6 +17,7 @@ import {
   WrapLike,
   WrapStar,
 } from "./ProductCardStyled";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProductCard = ({
   reducePrice,
@@ -25,10 +26,28 @@ const ProductCard = ({
   description,
   price,
   oldPrice,
+  productId,
+  className,
 }) => {
   const arrayStar = new Array(5).fill(1);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavigate = () => {
+    const isInProductDetail = location.pathname.includes("/product-detail");
+    if (isInProductDetail) {
+      // Chỉ lấy phần trước `product-detail`
+      const newPath = location.pathname.split("/product-detail")[0];
+      navigate(`${newPath}/product-detail/${productId}`, { replace: true });
+    } else {
+      navigate(`product-detail/${productId}`, { replace: true });
+    }
+  };
   return (
-    <ContainerProductCardStyled>
+    <ContainerProductCardStyled
+      className={className ? className : ""}
+      onClick={handleNavigate}
+    >
       <WrapImg>
         {reducePrice > 0 && <ReducePrice>{reducePrice}%</ReducePrice>}
         <ImgProduct src={imgUrl} />

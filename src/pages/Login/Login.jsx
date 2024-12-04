@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../service/user";
-import { setCredentials } from "../../redux/user/userSlice";
+import { setCredentials } from "../../redux/userSlice";
 import { toast } from "react-toastify";
 
 const TextFieldStyled = styled(TextField)(() => ({
