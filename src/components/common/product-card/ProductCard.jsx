@@ -3,7 +3,6 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   ContainerProductCardStyled,
@@ -55,11 +54,13 @@ const ProductCard = ({
       <ProductNameStyled variant="h3">{productName}</ProductNameStyled>
       <Box sx={{ display: "flex" }}>
         <PropductPrice>{price} đ</PropductPrice>
-        {oldPrice && <PropductPrice oldPrice={true}>{price} đ</PropductPrice>}
+        {oldPrice && Number(oldPrice) > 0 && (
+          <PropductPrice oldPrice={true}>{oldPrice} đ</PropductPrice>
+        )}
       </Box>
       <DescriptionStyled>{description}</DescriptionStyled>
       <FooterProductCard>
-        <WrapStar className="okok">
+        <WrapStar>
           {arrayStar.map((item, index) => (
             <StarRateIcon
               key={index}

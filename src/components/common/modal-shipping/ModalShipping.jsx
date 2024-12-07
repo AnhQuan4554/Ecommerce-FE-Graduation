@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Box,
   Button,
@@ -13,6 +14,11 @@ import {
 import React, { useState } from "react";
 import styled from "styled-components";
 import { convertVNDToUSD } from "../../../utils/convertVNDToUSD";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useCreateOrderMutation } from "../../../service/order";
+import { useNavigate } from "react-router-dom";
+import { addToOrder } from "../../../redux/orderSlice";
 
 const style = {
   position: "absolute",
@@ -36,25 +42,48 @@ const TextFieldStyled = styled(TextField)(() => ({
   marginBottom: "20px",
 }));
 const ModalShipping = ({ open, setOpen, totalPay, productDetailData }) => {
+  const { userInfo } = useSelector((state) => state.user);
+  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const navigate = useNavigate();
   const handleClose = () => setOpen(false);
   const [shippingAddress, setShippingAddress] = useState({
     address: "",
     city: "",
     postalCode: "0",
     country: "Việt Nam",
+    phone: "",
   });
   const [paymentMethod, setPaymentMethod] = useState("Cash");
-  const handleSubmit = () => {
-    console.log("productDetailData+++", productDetailData);
-    console.log("shippingAddress++", shippingAddress);
-    console.log("paymentMethod", paymentMethod);
+  const dispatch = useDispatch();
+  const handleSubmit = async () => {
+    try {
+      const res = await createOrder({
+        orderItems: [productDetailData],
+        shippingAddress,
+        paymentMethod,
+        userId: userInfo?._id,
+      });
+      dispatch(addToOrder(res && res?.data));
+      // dispatch(clearCartItems());
+      navigate(`/payment`);
+    } catch (error) {
+      toast.error(error);
+    }
   };
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
         <Typography variant="h4" mb={"30px"}>
-          Nhập địa chỉ và phương thức thanh toán
+          Nhập thông tin vận chuyển
         </Typography>
+        <TextFieldStyled
+          required
+          label="Nhập số điện thoại"
+          type="number"
+          onChange={(e) =>
+            setShippingAddress({ ...shippingAddress, phone: e.target.value })
+          }
+        />
         <TextFieldStyled
           required
           label="Nhập địa chỉ"

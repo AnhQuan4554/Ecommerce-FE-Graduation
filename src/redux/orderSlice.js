@@ -2,27 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   orderInfo: {
-    user: null, // ID người dùng liên kết với đơn hàng
-    orderItems: [], // Danh sách các sản phẩm trong đơn hàng
+    user: null,
+    orderItems: [],
     shippingAddress: {
       address: "",
       city: "",
-      postalCode: "",
-      country: "",
+      phone: "",
     },
-    paymentMethod: "", // Phương thức thanh toán
+    paymentMethod: "Cash",
     itemsPrice: 0.0,
     taxPrice: 0.0,
     shippingPrice: 0.0,
     totalPrice: 0.0,
     isPaid: false,
-    paidAt: null, // Thời gian thanh toán
+    paidAt: null,
     isDelivered: false,
-    deliveredAt: null, // Thời gian giao hàng
+    deliveredAt: null,
   },
-  loading: false, // Trạng thái đang tải
-  error: null, // Quản lý lỗi nếu có
-  success: false, // Trạng thái thành công
+  loading: false,
+  error: null,
+  success: false,
 };
 
 export const orderSlice = createSlice({
@@ -31,10 +30,6 @@ export const orderSlice = createSlice({
   reducers: {
     addToOrder: (state, action) => {
       state.orderInfo = action.payload;
-    },
-    logout: (state) => {
-      state.userInfo = null;
-      localStorage.clear();
     },
   },
 });

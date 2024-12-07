@@ -42,6 +42,7 @@ var settings = {
 
 const DetailProduct = () => {
   const { id } = useParams();
+
   const {
     currentData: productDetailData,
     isLoading,
@@ -56,9 +57,9 @@ const DetailProduct = () => {
   const handleChangeOptions = (price) => {
     setProductPrice(price);
   };
-  const handleSubmit = () => {
-    // const dataSubmit = {...productDetailData,itemsPrice};
-  };
+  useEffect(() => {
+    setProductPrice(productDetailData?.price);
+  }, [productDetailData?.price]);
   return (
     <div>
       <ContainerCustomStyled>
@@ -175,7 +176,7 @@ const DetailProduct = () => {
           open={openModal}
           setOpen={setOpenModal}
           totalPay={productPrice * quantity}
-          productDetailData={productDetailData}
+          productDetailData={{ ...productDetailData, qty: quantity }}
         />
       </ContainerCustomStyled>
     </div>

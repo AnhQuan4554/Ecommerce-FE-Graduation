@@ -1,10 +1,8 @@
 import React from "react";
-import { Box, Button, Container, Grid2, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ProductCard from "../common/product-card/ProductCard";
-import phone01 from "../../assets/phone01.jpg";
-import phone02 from "../../assets/phone02.jpg";
-import phone03 from "../../assets/phone03.jpg";
+
 import { useGetTopProductsQuery } from "../../service/product";
 
 const ContainerBestSeller = styled(Box)(() => ({
@@ -41,7 +39,7 @@ const BestSeller = () => {
                   productName={item?.name}
                   description={item?.description}
                   price={item?.price}
-                  oldPrice={item?.oldPrice}
+                  oldPrice={item?.oldPrice > 0 && item?.oldPrice}
                 />
               </Grid2>
             ))}

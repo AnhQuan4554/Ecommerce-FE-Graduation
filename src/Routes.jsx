@@ -11,6 +11,8 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Login/Register";
 import AdminProductList from "./pages/Production/admin-product/AdminProductList";
 import AdminCategory from "./pages/Production/admin-category/AdminCategory";
+import Payment from "./pages/Payment/Payment";
+import Order from "./pages/ProductBuy/Order";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,6 +21,8 @@ export const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/payment" element={<Payment />} />
+      <Route path="/order" element={<Order />} />
       <Route path="/product-detail/:id" element={<DetailProduct />} />
       {/* admin */}
       <Route path="/admin/products" element={<AdminProductList />}>

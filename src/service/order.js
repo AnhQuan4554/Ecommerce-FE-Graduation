@@ -35,9 +35,10 @@ export const orderApi = createApi({
     }),
 
     getMyOrders: builder.query({
-      query: () => ({
-        url: `${ORDERS_URL}/mine`,
+      query: (userId) => ({
+        url: `${ORDERS_URL}/mine?userId=${userId}`,
       }),
+
       keepUnusedDataFor: 5,
     }),
 
