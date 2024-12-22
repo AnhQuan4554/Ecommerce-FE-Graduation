@@ -93,10 +93,7 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
       toast.error("Lỗi khi cập nhật sản phẩm");
     }
   };
-  console.log(
-    "bran",
-    brandData.find((item) => item?.value == productCurrently?.brand)?.label
-  );
+
   return (
     productCurrently && (
       <Modal

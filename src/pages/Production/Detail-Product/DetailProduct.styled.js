@@ -51,7 +51,7 @@ export const WrapInforSpecificationStyled = styled(Box)(() => ({
 }));
 
 export const PriceList = styled(Grid2)(() => ({}));
-export const PriceItem = styled(Grid2)(({ isHighlighted }) => ({
+export const PriceItem = styled(Grid2)(({ ishighlighted }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -62,8 +62,8 @@ export const PriceItem = styled(Grid2)(({ isHighlighted }) => ({
   width: "100%",
   cursor: "pointer",
   marginBottom: "20px",
-  backgroundColor: isHighlighted ? "rgba(255, 192, 203, 0.5)" : "",
-  borderColor: isHighlighted ? "red" : "",
+  backgroundColor: ishighlighted ? "rgba(255, 192, 203, 0.5)" : "",
+  borderColor: ishighlighted ? "red" : "",
 }));
 export const WrapPromotion = styled(Grid2)(() => ({
   borderTopLeftRadius: "10px",

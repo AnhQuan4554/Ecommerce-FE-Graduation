@@ -21,10 +21,10 @@ export const orderApi = createApi({
       }),
     }),
     payOrder: builder.mutation({
-      query: ({ orderId, details }) => ({
+      query: ({ orderId, statusDelivery }) => ({
         url: `${ORDERS_URL}/${orderId}/pay`,
         method: "PUT",
-        body: details,
+        body: statusDelivery,
       }),
     }),
 
@@ -73,6 +73,14 @@ export const orderApi = createApi({
         body: { productId, qty },
       }),
     }),
+
+    deleteOrder: builder.mutation({
+      query: (id) => ({
+        url: `${ORDERS_URL}/${id}`,
+        method: "DELETE",
+      }),
+      providesTags: ["Product"],
+    }),
   }),
 });
 
@@ -87,4 +95,5 @@ export const {
   useGetTotalSalesByDateQuery,
   useGetTotalSalesQuery,
   usePayOrderMutation,
+  useDeleteOrderMutation,
 } = orderApi;

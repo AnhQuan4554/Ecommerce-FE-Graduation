@@ -38,7 +38,7 @@ const RelatedBrandProducts = ({ brand }) => {
     const fetchProducts = async () => {
       try {
         const brandSend = brandData.find((item) => item?.value == brand)?.value;
-        getProductsByBrand({ brand: brandSend })
+        getProductsByBrand({ brand: brandSend || 1 })
           .unwrap()
           .then((res) => {
             res && setArrProduct(res);

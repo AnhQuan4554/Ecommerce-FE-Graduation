@@ -1,4 +1,7 @@
-import { useGetProfileQuery, useUpdateProfileMutation } from "../../service/user";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "../../service/user";
 import {
   TextField,
   Box,
@@ -66,7 +69,12 @@ const Profile = () => {
 
   if (isLoading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
         <CircularProgress />
       </Box>
     );
@@ -74,7 +82,12 @@ const Profile = () => {
 
   if (isError || !currentData) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
         <Typography variant="h6" color="error">
           Không thể tải dữ liệu hồ sơ người dùng.
         </Typography>
@@ -83,11 +96,13 @@ const Profile = () => {
   }
 
   return (
-    <Box sx={{
-      pt: 6,
-      pl: { xs: 8, sm: 16, lg: 40, xl: 60 }, // Padding trái thay đổi theo màn hình
-      pr: { xs: 8, sm: 16, lg: 40, xl: 60 }, // Padding phải thay đổi theo màn hình
-    }}>
+    <Box
+      sx={{
+        pt: 6,
+        pl: { xs: 8, sm: 16, lg: 40, xl: 60 }, // Padding trái thay đổi theo màn hình
+        pr: { xs: 8, sm: 16, lg: 40, xl: 60 }, // Padding phải thay đổi theo màn hình
+      }}
+    >
       <Typography variant="h4" mb={4} textAlign="center">
         {isEditing ? "CẬP NHẬT THÔNG TIN CÁ NHÂN" : "THÔNG TIN CÁ NHÂN"}
       </Typography>
@@ -103,6 +118,7 @@ const Profile = () => {
             readOnly: !isEditing,
           },
         }}
+        disabled={!isEditing}
       />
       <TextField
         label="Email"
@@ -116,6 +132,7 @@ const Profile = () => {
             readOnly: !isEditing,
           },
         }}
+        disabled={!isEditing}
       />
       <TextField
         label="Số điện thoại"
@@ -129,6 +146,7 @@ const Profile = () => {
             readOnly: !isEditing,
           },
         }}
+        disabled={!isEditing}
       />
       <TextField
         label="Ngày sinh"
@@ -142,6 +160,7 @@ const Profile = () => {
             readOnly: !isEditing,
           },
         }}
+        disabled={!isEditing}
       />
       <Box display="flex" gap={2} mt={2}>
         {isEditing ? (
@@ -214,7 +233,11 @@ const Profile = () => {
               >
                 Đồng ý
               </Button>
-              <Button variant="outlined" color="secondary" onClick={handleModalClose}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={handleModalClose}
+              >
                 Hủy
               </Button>
             </Box>

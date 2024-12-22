@@ -92,7 +92,7 @@ const DetailProduct = () => {
                   <Grid2 key={index} size={4}>
                     <PriceItem
                       onClick={() => handleChangeOptions(item?.price)}
-                      isHighlighted={item.price == productPrice}
+                      ishighlighted={item.price == productPrice}
                     >
                       <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
                         {item.name}
