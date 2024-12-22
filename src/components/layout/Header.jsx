@@ -29,16 +29,15 @@ import { useLogoutMutation } from "../../service/user";
 import { logout } from "../../redux/userSlice";
 
 const pages = ["Đơn hàng", "Về chúng tôi", "Hỗ trợ", "Liên hệ"];
-const settings = [
-  "Profile",
-  "Account",
-  "Dashboard",
-  "Products",
-  "Category",
-  "Logout",
-];
+const pagesLink = {
+  "Đơn hàng": "order",
+  "Về chúng tôi": "about-us",
+  "Hỗ trợ": "support",
+  "Liên hệ": "contact",
+};
+
 const convertLink = {
-  "Tài khoản": "account",
+  "Tài khoản": "profile",
   "Thống kê cửa hàng": "dashboard",
   "Sản phẩm": "products",
   "Phân loại": "category",
@@ -143,9 +142,22 @@ const Header = () => {
                   color: " rgb(43, 43, 48)",
                   display: "block",
                   margin: "0 8px",
+                  "& a": {
+                    textDecoration: "none",
+                    color: "black",
+                  },
                 }}
               >
-                {page}
+                <Link
+                  to={pagesLink[page]}
+                  sx={{
+                    backgroundColor: "#ea4750",
+                    padding: "10px",
+                    marginRight: "10px",
+                  }}
+                >
+                  {page}
+                </Link>
               </Button>
             ))}
             <SearchStyled sx={{ display: { xs: "none", md: "flex" } }}>
@@ -223,7 +235,11 @@ const Header = () => {
             >
               {/* authory update code handlle for setting */}
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  sx={{ padding: "6px" }}
+                  key={setting}
+                  onClick={handleCloseUserMenu}
+                >
                   <Link
                     onClick={convertLink[setting] == "logout" && logoutHandler}
                     style={{
@@ -231,6 +247,8 @@ const Header = () => {
                       textDecoration: "none",
                       color: "black",
                       fontSize: "20px",
+                      width: "100%",
+                      textAlignLast: "left",
                     }}
                     to={`/admin/${convertLink[setting]}`}
                   >

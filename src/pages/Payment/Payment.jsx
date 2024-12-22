@@ -1,20 +1,56 @@
 import { Box, Button, Grid2, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ContainerPaymentPageStyled,
   DriverInforStyled,
   ItemInforStyled,
   TextFiledStyled,
 } from "./Payment.styled";
-import { PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { convertVNDToUSDForPay } from "../../utils/convertVNDToUSD";
 import { useNavigate } from "react-router-dom";
+import {
+  useGetPaypalClientIdQuery,
+  usePayOrderMutation,
+} from "../../service/order";
 
 const Payment = () => {
   const { orderInfo } = useSelector((state) => state.order);
   const navigate = useNavigate();
+  const [payOrder, { isLoading, isSuccess: updatePaySuccess }] =
+    usePayOrderMutation();
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+
+  const {
+    data: paypal,
+    isLoading: loadingPaPal,
+    error: errorPayPal,
+  } = useGetPaypalClientIdQuery();
+  if (errorPayPal) {
+    console.log("errorPayPal++", errorPayPal);
+  }
+  useEffect(() => {
+    if (!errorPayPal && !loadingPaPal && paypal.clientId) {
+      const loadingPaPalScript = async () => {
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": paypal.clientId,
+            currency: "USD",
+          },
+        });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+      };
+      loadingPaPalScript();
+      // if (order && !order.isPaid) {
+      // if (!window.paypal) {
+      //   loadingPaPalScript();
+      // }
+      // }
+    }
+  }, [errorPayPal, paypal, paypalDispatch]);
 
   function createOrder(data, actions) {
     return actions.order
@@ -29,19 +65,41 @@ const Payment = () => {
   }
 
   function onError(err) {
+    console.log("err when pay by paypal", err);
     toast.error("Lỗi thanh toán");
   }
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then((details) => {
-      const payerName = details.payer.name.given_name;
-      // toast.error(err.message);
+      const status = details?.status;
+      if (status === "COMPLETED") {
+        handleDelivery();
+      } else {
+        console.log(`Transaction not completed. Status: ${status}`);
+      }
       // alert(`Transaction completed by ${payerName}`);
     });
   };
   // update order and delivery
-  const handleDelivery = () => {
-    navigate(`/order`);
+  const handleDelivery = async () => {
+    // handle update status Order
+    if (orderInfo?.paymentMethod === "Cash") {
+      toast.success("Đặt hàng thành công");
+      setTimeout(() => {
+        navigate(`/order`);
+      }, 1000);
+    } else {
+      const response = await payOrder({
+        orderId: orderInfo?._id,
+        statusDelivery: 1,
+      });
+      if (response?.data?.status === "success") {
+        toast.success("Đặt hàng thành công");
+        setTimeout(() => {
+          navigate(`/order`);
+        }, 1000);
+      }
+    }
   };
   return (
     <>
@@ -100,6 +158,8 @@ const Payment = () => {
               <Button variant="contained" onClick={handleDelivery}>
                 Xác nhận đặt hàng
               </Button>
+            ) : isPending ? (
+              <div>Loading PayPal...</div>
             ) : (
               <PayPalButtons
                 createOrder={createOrder}

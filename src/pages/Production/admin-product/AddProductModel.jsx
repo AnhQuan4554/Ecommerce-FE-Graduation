@@ -39,7 +39,7 @@ const TextFieldStyled = styled(TextField)(() => ({
 }));
 
 const AddProductModel = ({ open, setOpen, refetch }) => {
-  const [numberOfOptions, setNumberOfOptions] = useState(0);
+  const [numberOfOptions, setNumberOfOptions] = useState(null);
   const [newProduct, setNewProduct] = useState({
     name: "",
     image: [],
@@ -53,6 +53,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
     options: null,
   });
   const [imageUrl, setImageUrl] = useState([]);
+  const [listImgUpload, setListImgUpload] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [optionsState, setOptionsState] = useState([]);
 
@@ -60,6 +61,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
   const [createProduct, { reset }] = useCreateProductMutation();
   const handleClose = () => setOpen(false);
   const categoriesQuery = useFetchCategoriesQuery();
+
   const handleOptionChange = (index, field, value) => {
     const updatedOptions = [...optionsState];
     updatedOptions[index] = {
@@ -68,18 +70,33 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
     };
     setOptionsState(updatedOptions);
   };
-  const uploadFileHandler = async (e) => {
+
+  const handleOnChangeImage = (event) => {
+    const files = event.target?.files;
+    if (files) {
+      for (let i = 0; i < files?.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImageUrl((prev) => [...prev, e.target?.result]);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+
+  const uploadFileHandler = async () => {
     const formData = new FormData();
-    Array.from(e.target.files).forEach((file) => {
-      formData.append("image", file);
-    });
-    try {
-      const res = await uploadProductImage(formData).unwrap();
-      toast.success(res.message);
-      setNewProduct({ ...newProduct, image: [...res.images] });
-      setImageUrl(res.images);
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
+    if (listImgUpload && listImgUpload.length > 0) {
+      Array.from(listImgUpload).forEach((file) => {
+        formData.append("image", file);
+      });
+      try {
+        const res = await uploadProductImage(formData).unwrap();
+        return res.images;
+      } catch (error) {
+        console.log("err when upload image", error);
+      }
     }
   };
 
@@ -96,8 +113,9 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const responseImages = await uploadFileHandler();
       const productData = new FormData();
-      productData.append("image", [...newProduct.image]);
+      productData.append("image", [...responseImages]);
 
       productData.append("name", newProduct.name);
       productData.append("description", newProduct.description);
@@ -108,8 +126,6 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
       productData.append("brand", newProduct.brand);
       productData.append("countInStock", newProduct.countInStock);
       productData.append("options", JSON.stringify(optionsState));
-      console.log("optionsState++", JSON.stringify(optionsState));
-      console.log("new product++", productData);
       const { data } = await createProduct(productData);
 
       if (data.error) {
@@ -176,7 +192,14 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
             type="file"
             accept="image/*"
             multiple
-            onChange={uploadFileHandler}
+            onClick={(event) => {
+              setImageUrl([]);
+              event.target.value = null;
+            }}
+            onChange={(e) => {
+              setListImgUpload(e.target.files);
+              handleOnChangeImage(e);
+            }}
           />
         </Button>
 
@@ -190,7 +213,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
               mb: "40px",
             }}
           >
-            {imageUrl &&
+            {imageUrl?.length > 0 &&
               imageUrl.map((url, index) => (
                 <img
                   style={{

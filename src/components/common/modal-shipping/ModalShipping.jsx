@@ -31,7 +31,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: "20px",
-  height: "80vh",
+  height: "82vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -56,6 +56,14 @@ const ModalShipping = ({ open, setOpen, totalPay, productDetailData }) => {
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const dispatch = useDispatch();
   const handleSubmit = async () => {
+    if (
+      !shippingAddress.address ||
+      !shippingAddress.city ||
+      !shippingAddress.phone
+    ) {
+      toast.error("Bạn cần nhập đủ thông tin");
+      return;
+    }
     try {
       const res = await createOrder({
         orderItems: [productDetailData],
