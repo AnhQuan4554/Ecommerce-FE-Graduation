@@ -13,6 +13,9 @@ import AdminProductList from "./pages/Production/admin-product/AdminProductList"
 import AdminCategory from "./pages/Production/admin-category/AdminCategory";
 import Payment from "./pages/Payment/Payment";
 import Order from "./pages/ProductBuy/Order";
+import Cart from "./pages/ProductBuy/Cart";
+import ManageUser from "./pages/manage-user/ManageUser";
+import DashBoard from "./pages/dashboard/DashBoard";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +26,7 @@ export const router = createBrowserRouter(
       <Route path="/profile" element={<Profile />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/order" element={<Order />} />
+      <Route path="/cart" element={<Cart />} />
       <Route path="/product-detail/:id" element={<DetailProduct />} />
       {/* admin */}
       <Route path="/admin/products" element={<AdminProductList />}>
@@ -32,6 +36,12 @@ export const router = createBrowserRouter(
         <Route path="detail/:id" element={<DetailProduct />} />
       </Route>
       <Route path="/admin/profile" element={<Profile />}>
+        {/* <Route path="detail/:id" element={<DetailProduct />} /> */}
+      </Route>
+      <Route path="/admin/users" element={<ManageUser />}>
+        {/* <Route path="detail/:id" element={<DetailProduct />} /> */}
+      </Route>
+      <Route path="/admin/dashboard" element={<DashBoard />}>
         {/* <Route path="detail/:id" element={<DetailProduct />} /> */}
       </Route>
     </Route>

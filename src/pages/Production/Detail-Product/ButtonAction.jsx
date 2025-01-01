@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { Box, Button, Container, Grid, Grid2, Typography } from "@mui/material";
@@ -10,6 +11,8 @@ import imgDetail01 from "../../../assets/detail/imgDetail01.jpg";
 import imgDetail02 from "../../../assets/detail/imgDetail02.jpg";
 import imgDetail03 from "../../../assets/detail/imgDetail03.jpg";
 import imgDetail04 from "../../../assets/detail/imgDetail04.jpg";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../redux/cartSlice";
 
 const arrImg = [imgDetail01, imgDetail02, imgDetail03, imgDetail04];
 
@@ -36,7 +39,12 @@ const OrderBtnStyled = styled(Button)(() => ({
   width: "60px",
 }));
 
-const ButtonAction = ({ setOpenModal }) => {
+const ButtonAction = ({ setOpenModal, productDetailData }) => {
+  const dispatch = useDispatch();
+  const handleAddToCart = () => {
+    console.log("productDetailData++", productDetailData);
+    dispatch(addToCart(productDetailData));
+  };
   return (
     <WrapBtnAction>
       <Grid2 container spacing={2}>
@@ -53,11 +61,7 @@ const ButtonAction = ({ setOpenModal }) => {
           </BuyNowBtnStyled>
         </Grid2>
         <Grid2 size={2}>
-          <OrderBtnStyled
-            onClick={() => {
-              setOpenModal(true);
-            }}
-          >
+          <OrderBtnStyled onClick={handleAddToCart}>
             <AddShoppingCartIcon
               sx={{ fontSize: "30px", color: "#e04040", mb: "2px" }}
             />

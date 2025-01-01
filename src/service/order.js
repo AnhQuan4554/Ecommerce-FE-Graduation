@@ -63,14 +63,14 @@ export const orderApi = createApi({
       query: () => `${ORDERS_URL}/total-sales`,
     }),
 
-    getTotalSalesByDate: builder.query({
-      query: () => `${ORDERS_URL}/total-sales-by-date`,
+    getTotalSalesByMonth: builder.query({
+      query: () => `${ORDERS_URL}/total-sales-by-month`,
     }),
     updateProductStockInOrder: builder.mutation({
-      query: ({ productId, qty }) => ({
+      query: ({ productId, quantity }) => ({
         url: `${ORDERS_URL}/update-stock`,
         method: "POST",
-        body: { productId, qty },
+        body: { productId, quantity },
       }),
     }),
 
@@ -96,4 +96,5 @@ export const {
   useGetTotalSalesQuery,
   usePayOrderMutation,
   useDeleteOrderMutation,
+  useGetTotalSalesByMonthQuery,
 } = orderApi;

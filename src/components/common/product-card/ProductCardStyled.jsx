@@ -58,7 +58,9 @@ export const WrapImg = styled(Box)(() => ({
 
 export const ImgProduct = styled("img")(() => ({
   width: "160px",
+  minHeight: "160px",
   height: "100%",
+  maxHeight: "100%",
   objectFit: "cover",
 }));
 

@@ -28,9 +28,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../../service/user";
 import { logout } from "../../redux/userSlice";
 
-const pages = ["Đơn hàng", "Về chúng tôi", "Hỗ trợ", "Liên hệ"];
+const pages = ["Đơn hàng", "Giỏ hàng", "Về chúng tôi", "Hỗ trợ", "Liên hệ"];
 const pagesLink = {
   "Đơn hàng": "order",
+  "Giỏ hàng": "cart",
   "Về chúng tôi": "about-us",
   "Hỗ trợ": "support",
   "Liên hệ": "contact",

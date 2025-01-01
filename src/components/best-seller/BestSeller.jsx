@@ -13,7 +13,7 @@ const ContainerBestSeller = styled(Box)(() => ({
 }));
 
 const BestSeller = () => {
-  const { currentData, isLoading } = useGetTopProductsQuery();
+  const { currentData, isLoading } = useGetTopProductsQuery({ typeProduct: 1 });
   return (
     <Box sx={{ padding: "0 50px" }}>
       <ContainerBestSeller>

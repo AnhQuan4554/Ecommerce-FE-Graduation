@@ -96,7 +96,8 @@ export const productApi = createApi({
     }),
 
     getTopProducts: builder.query({
-      query: () => `${PRODUCT_URL}/top`,
+      query: ({ typeProduct, limitProduct }) =>
+        `${PRODUCT_URL}/top?typeProduct=${typeProduct}&limitProduct=${limitProduct}`,
       keepUnusedDataFor: 5,
     }),
 

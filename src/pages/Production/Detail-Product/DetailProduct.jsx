@@ -17,7 +17,7 @@ import {
   WrapPromotion,
   WrapPromotionContent,
 } from "./DetailProduct.styled";
-import { Box, Grid2, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid2, TextField, Typography } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -29,6 +29,7 @@ import {
 import { formatCurrency } from "../../../utils/formatPrice";
 import RelatedBrandProducts from "./RelatedBrandProducts";
 import ModalShipping from "../../../components/common/modal-shipping/ModalShipping";
+import ReviewForm from "../../ProductBuy/ReviewForm";
 
 var settings = {
   dots: true,
@@ -53,13 +54,15 @@ const DetailProduct = () => {
   );
   const [quantity, setQuantity] = useState(1);
   const [openModal, setOpenModal] = useState(false);
-
+  const [openModal2, setOpenModal2] = useState(false);
+  // const [openReview, setOpenReview] = useState(true);
   const handleChangeOptions = (price) => {
     setProductPrice(price);
   };
   useEffect(() => {
     setProductPrice(productDetailData?.price);
   }, [productDetailData?.price]);
+  console.log("openReview detail", openModal2);
   return (
     <div>
       <ContainerCustomStyled>
@@ -84,7 +87,18 @@ const DetailProduct = () => {
                 </Grid2>
               ))}
             </AdditionalProductImages>
+            <Box>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setOpenModal2(true);
+                }}
+              >
+                Thêm đánh giá
+              </Button>
+            </Box>
           </Grid2>
+
           <Grid2 size={5}>
             <WrapInforSpecificationStyled>
               <PriceList container spacing={2}>
@@ -165,7 +179,10 @@ const DetailProduct = () => {
                 </WrapPromotionContent>
               </WrapPromotion>
               {/* Button handle action */}
-              <ButtonAction setOpenModal={setOpenModal} />
+              <ButtonAction
+                productDetailData={{ ...productDetailData, quantity: quantity }}
+                setOpenModal={setOpenModal}
+              />
             </WrapInforSpecificationStyled>
           </Grid2>
         </Grid2>
@@ -176,9 +193,14 @@ const DetailProduct = () => {
           open={openModal}
           setOpen={setOpenModal}
           totalPay={productPrice * quantity}
-          productDetailData={{ ...productDetailData, qty: quantity }}
+          productDetailData={{ ...productDetailData, quantity: quantity }}
         />
       </ContainerCustomStyled>
+      <ReviewForm
+        openReview={openModal2}
+        setOpenReview={setOpenModal2}
+        // productId={id}
+      />
     </div>
   );
 };

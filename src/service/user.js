@@ -29,6 +29,11 @@ export const userApi = createApi({
         method: "POST",
       }),
     }),
+    getAllUser: builder.query({
+      query: () => ({
+        url: `${USERS_URL}`,
+      }),
+    }),
     getProfile: builder.query({
       query: (userId) => ({
         url: `${USERS_URL}/profile/${userId}`,
@@ -38,11 +43,17 @@ export const userApi = createApi({
       query: ({ userId, data }) => ({
         url: `${USERS_URL}/profile/${userId}`,
         method: "PUT",
-        body: data
+        body: data,
       }),
     }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useGetProfileQuery, useUpdateProfileMutation } =
-  userApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRegisterMutation,
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+  useGetAllUserQuery,
+} = userApi;

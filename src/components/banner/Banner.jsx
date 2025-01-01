@@ -19,15 +19,15 @@ const Banner = () => {
       <ImgBannerStyled top="60%" left="10%" src={lap3} />
       <ImgBannerStyled top="60%" right="10%" src={lap1} />
       <TitleBannerStyled variant="h2">
-        High-quality tech gadgets & accessories
+        Đẳng cấp công nghệ, nâng tầm trải nghiệm
       </TitleBannerStyled>
       <DesBannerStyled>
-        Shop our curated selection of premium products, designed to elevate your
-        everyday experiences
+        Khám phá bộ sưu tập sản phẩm cao cấp, được thiết kế để nâng tầm trải
+        nghiệm hàng ngày của bạn.
       </DesBannerStyled>
       <ContaiBtnStyled>
         <ButtonBannerStyled backgroundColor="rgb(14, 14, 14)" color="#fff">
-          Browse products
+          Khám phá sản phẩm
         </ButtonBannerStyled>
 
         <ButtonBannerStyled
@@ -35,7 +35,7 @@ const Banner = () => {
           color="black"
           borderColor="black"
         >
-          About Us
+          Về chúng tôi
         </ButtonBannerStyled>
       </ContaiBtnStyled>
     </ContainerBanner>
