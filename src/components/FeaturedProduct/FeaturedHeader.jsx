@@ -11,7 +11,7 @@ const FeaturedHeader = ({ headerTitle, brandList }) => {
     <ContainerFeaturedHeader>
       <HeaderTitle variant="h4">{headerTitle}</HeaderTitle>
       {brandList &&
-        brandList.map((item) => <BrandList key={item}>{item}</BrandList>)}
+        brandList?.map((item) => <BrandList key={item}>{item}</BrandList>)}
     </ContainerFeaturedHeader>
   );
 };

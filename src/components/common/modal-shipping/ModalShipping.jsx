@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCreateOrderMutation } from "../../../service/order";
 import { useNavigate } from "react-router-dom";
 import { addToOrder } from "../../../redux/orderSlice";
+import { useUpdateProductIsBuyMutation } from "../../../service/product";
 
 const style = {
   position: "absolute",
@@ -44,6 +45,7 @@ const TextFieldStyled = styled(TextField)(() => ({
 const ModalShipping = ({ open, setOpen, totalPay, productDetailData }) => {
   const { userInfo } = useSelector((state) => state.user);
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const [updateProductIsBuy] = useUpdateProductIsBuyMutation();
   const navigate = useNavigate();
   const handleClose = () => setOpen(false);
   const [shippingAddress, setShippingAddress] = useState({
@@ -73,7 +75,24 @@ const ModalShipping = ({ open, setOpen, totalPay, productDetailData }) => {
       });
       dispatch(addToOrder(res && res?.data));
       // dispatch(clearCartItems());
-      navigate(`/payment`);
+      // Update Product count in stock and number of buy
+      const resUpdateIsBuy = await updateProductIsBuy({
+        productId: productDetailData?._id,
+        productData: {
+          countInStock:
+            Number(productDetailData?.countInStock) -
+            Number(productDetailData?.quantity),
+          quantitySold:
+            Number(productDetailData?.quantitySold) +
+            Number(productDetailData?.quantity),
+        },
+      });
+      if (resUpdateIsBuy?.data?.status === "success") {
+        ///
+        navigate(`/payment`);
+      } else {
+        toast.error("Đã có lỗi khi mua hàng");
+      }
     } catch (error) {
       toast.error(error);
     }

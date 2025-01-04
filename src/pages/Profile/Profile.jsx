@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const userId = useSelector((state) => state.user.userInfo._id);
-  const { currentData, isLoading, isError } = useGetProfileQuery(userId);
+  const { currentData, isLoading, isError, refetch } =
+    useGetProfileQuery(userId);
   const [updateProfile] = useUpdateProfileMutation();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -59,7 +61,8 @@ const Profile = () => {
   const handleUpdateProfile = async () => {
     try {
       await updateProfile({ userId, data: formData }).unwrap();
-      console.log("Cập nhật thành công");
+      toast.success("Cập nhật thành công");
+      await refetch();
       setIsEditing(false);
       setIsModalOpen(false);
     } catch (error) {

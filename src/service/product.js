@@ -67,6 +67,13 @@ export const productApi = createApi({
         body: productData,
       }),
     }),
+    updateProductIsBuy: builder.mutation({
+      query: ({ productId, productData }) => ({
+        url: `${PRODUCT_URL}/${productId}/is-buy`,
+        method: "PUT",
+        body: productData,
+      }),
+    }),
 
     uploadProductImage: builder.mutation({
       query: (data) => ({
@@ -89,7 +96,7 @@ export const productApi = createApi({
 
     createReview: builder.mutation({
       query: (data) => ({
-        url: `${PRODUCT_URL}/${data.productId}/reviews`,
+        url: `${PRODUCT_URL}/reviews`,
         method: "POST",
         body: data,
       }),
@@ -99,6 +106,20 @@ export const productApi = createApi({
       query: ({ typeProduct, limitProduct }) =>
         `${PRODUCT_URL}/top?typeProduct=${typeProduct}&limitProduct=${limitProduct}`,
       keepUnusedDataFor: 5,
+    }),
+
+    filterProducts: builder.mutation({
+      query: ({
+        name,
+        category,
+        brand,
+        priceEnd,
+        priceStart,
+        typeProduct,
+      }) => ({
+        url: `${PRODUCT_URL}/filter-product?name=${name}&category=${category}&brand=${brand}&priceStart=${priceStart}&priceEnd=${priceEnd}&typeProduct=${typeProduct}`,
+        method: "POST",
+      }),
     }),
 
     getNewProducts: builder.query({
@@ -120,4 +141,6 @@ export const {
   useGetTopProductsQuery,
   useUploadProductImageMutation,
   useUpdateProductMutation,
+  useUpdateProductIsBuyMutation,
+  useFilterProductsMutation,
 } = productApi;

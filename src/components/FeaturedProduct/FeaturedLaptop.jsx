@@ -18,7 +18,7 @@ const FeaturedLaptop = () => {
       />
       <Grid2 container spacing={2}>
         {topLaptopData &&
-          topLaptopData.map((item) => (
+          topLaptopData?.map((item) => (
             <Grid2 key={item.id} size={2.4}>
               <ProductCard
                 productId={item?._id}

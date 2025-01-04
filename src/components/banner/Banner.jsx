@@ -11,6 +11,7 @@ import lap1 from "../../assets/homeImg/lap1.jpg";
 import lap2 from "../../assets/homeImg/lap2.jpg";
 import lap3 from "../../assets/homeImg/lap3.jpg";
 import phone1 from "../../assets/homeImg/phone1.jpg";
+import { Link } from "react-router-dom";
 const Banner = () => {
   return (
     <ContainerBanner>
@@ -26,8 +27,21 @@ const Banner = () => {
         nghiệm hàng ngày của bạn.
       </DesBannerStyled>
       <ContaiBtnStyled>
-        <ButtonBannerStyled backgroundColor="rgb(14, 14, 14)" color="#fff">
-          Khám phá sản phẩm
+        <ButtonBannerStyled
+          sx={{
+            my: 2,
+            color: " rgb(43, 43, 48)",
+            display: "block",
+            padding: "0",
+            "& a": {
+              textDecoration: "none",
+              color: "black",
+              padding: "24px 40px",
+            },
+          }}
+          color="#fff"
+        >
+          <Link to={"product-filter"}>Khám phá sản phẩm</Link>
         </ButtonBannerStyled>
 
         <ButtonBannerStyled

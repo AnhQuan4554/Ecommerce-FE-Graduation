@@ -24,7 +24,7 @@ export const orderApi = createApi({
       query: ({ orderId, statusDelivery }) => ({
         url: `${ORDERS_URL}/${orderId}/pay`,
         method: "PUT",
-        body: statusDelivery,
+        body: { statusDelivery },
       }),
     }),
 
@@ -49,10 +49,14 @@ export const orderApi = createApi({
     }),
 
     deliverOrder: builder.mutation({
-      query: (orderId) => ({
-        url: `${ORDERS_URL}/${orderId}/deliver`,
-        method: "PUT",
-      }),
+      query: ({ id, statusDelivery }) => {
+        console.log("4554", statusDelivery);
+        return {
+          url: `${ORDERS_URL}/${id}/deliver`,
+          method: "PUT",
+          body: { statusDelivery },
+        };
+      },
     }),
 
     getTotalOrders: builder.query({

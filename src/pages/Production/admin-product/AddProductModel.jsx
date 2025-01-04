@@ -102,7 +102,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
 
   useEffect(() => {
     if (!categoriesQuery.isLoading) {
-      const data = categoriesQuery.currentData.map((item) => ({
+      const data = categoriesQuery.currentData?.map((item) => ({
         label: item.name,
         value: item._id,
       }));
@@ -214,7 +214,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
             }}
           >
             {imageUrl?.length > 0 &&
-              imageUrl.map((url, index) => (
+              imageUrl?.map((url, index) => (
                 <img
                   style={{
                     objectFit: "cover",
@@ -278,7 +278,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
           label="Nhập số lượng cấu hình"
         />
         {numberOfOptions &&
-          Array.from({ length: numberOfOptions }).map((_, index) => (
+          Array.from({ length: numberOfOptions })?.map((_, index) => (
             <div key={index}>
               <TextFieldStyled
                 onChange={(e) =>

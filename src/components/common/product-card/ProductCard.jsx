@@ -61,7 +61,7 @@ const ProductCard = ({
       <DescriptionStyled>{description}</DescriptionStyled>
       <FooterProductCard>
         <WrapStar>
-          {arrayStar.map((item, index) => (
+          {arrayStar?.map((item, index) => (
             <StarRateIcon
               key={index}
               sx={{ width: "15px", height: "15px", color: "#f59e0b" }}

@@ -28,11 +28,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../../service/user";
 import { logout } from "../../redux/userSlice";
 
-const pages = ["Đơn hàng", "Giỏ hàng", "Về chúng tôi", "Hỗ trợ", "Liên hệ"];
+const pages = [
+  "Đơn hàng",
+  "Giỏ hàng",
+  "Sản phẩm yêu thích",
+  "Hỗ trợ",
+  "Liên hệ",
+];
 const pagesLink = {
   "Đơn hàng": "order",
   "Giỏ hàng": "cart",
-  "Về chúng tôi": "about-us",
+  "Sản phẩm yêu thích": "favourite-product",
   "Hỗ trợ": "support",
   "Liên hệ": "contact",
 };
@@ -121,7 +127,7 @@ const Header = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
+              {pages?.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: "center" }}>{page}</Typography>
                 </MenuItem>
@@ -134,7 +140,7 @@ const Header = () => {
           <WrapToolTipHeaderStyled
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
           >
-            {pages.map((page) => (
+            {pages?.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -235,7 +241,7 @@ const Header = () => {
               onClose={handleCloseUserMenu}
             >
               {/* authory update code handlle for setting */}
-              {settings.map((setting) => (
+              {settings?.map((setting) => (
                 <MenuItem
                   sx={{ padding: "6px" }}
                   key={setting}

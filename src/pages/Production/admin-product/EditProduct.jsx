@@ -56,7 +56,7 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
 
   useEffect(() => {
     if (!categoriesQuery.isLoading) {
-      const data = categoriesQuery.currentData.map((item) => ({
+      const data = categoriesQuery.currentData?.map((item) => ({
         label: item.name,
         value: item._id,
       }));

@@ -30,7 +30,7 @@ const BestSeller = () => {
         </Typography>
         <Grid2 container spacing={2} padding={"50px"}>
           {currentData &&
-            currentData.map((item) => (
+            currentData?.map((item) => (
               <Grid2 key={item?._id} size={2.4}>
                 <ProductCard
                   productId={item?._id}

@@ -1,4 +1,5 @@
 export const brandData = [
+  { label: "Tất cả", value: 0 },
   { label: "Apple", value: 1 },
   { label: "Samsung", value: 2 },
   { label: "Xiaomi", value: 3 },

@@ -10,7 +10,10 @@ import {
 } from "@mui/material";
 import { isDeepEqual } from "@mui/x-data-grid/internals";
 import React, { useEffect, useState } from "react";
-import { usePayOrderMutation } from "../../service/order";
+import {
+  useDeliverOrderMutation,
+  usePayOrderMutation,
+} from "../../service/order";
 import { toast } from "react-toastify";
 
 const style = {
@@ -39,7 +42,7 @@ const OrderModal = ({ open, setOpen, refetchGetOrderList, orderDataTable }) => {
     setIsPayment(orderDataTable?.isPaid);
   }, [orderDataTable?.isDelivered, orderDataTable?.isDelivered]);
 
-  const [payOrder, { isLoading }] = usePayOrderMutation();
+  const [deliverOrder, { isLoading }] = useDeliverOrderMutation();
 
   const handleChangeDelivery = (event) => {
     setIsDelivery(event.target.value);
@@ -48,9 +51,9 @@ const OrderModal = ({ open, setOpen, refetchGetOrderList, orderDataTable }) => {
     setIsPayment(event.target.value);
   };
   const handleUpdateOrder = async () => {
-    const response = await payOrder({
-      orderId: orderDataTable?._id,
-      statusDelivery: 1,
+    const response = await deliverOrder({
+      id: orderDataTable?._id,
+      statusDelivery: Number(isDelivery),
     });
     if (response?.data?.status === "success") {
       toast.success("Cập nhật thành công");

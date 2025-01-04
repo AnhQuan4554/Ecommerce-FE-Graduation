@@ -12,6 +12,9 @@ import {
 import React, { useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import styled from "styled-components";
+import { useCreateReviewMutation } from "../../service/product";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const style = {
   position: "absolute",
   top: "50%",
@@ -28,13 +31,39 @@ const style = {
   flexDirection: "column",
   alignItems: "center",
 };
-const ReviewForm = ({ openReview, setOpenReview, productId }) => {
+const ReviewForm = ({
+  openReview,
+  setOpenReview,
+  productId,
+  refetchProductDetailPage,
+}) => {
+  const { userInfo } = useSelector((state) => state.user);
+  const [createReview, { isLoading }] = useCreateReviewMutation();
   const [starReview, setStarReview] = useState(4);
   const [comment, setComment] = useState("");
   const handleChangeStar = (e) => {
     setStarReview(e.target.value);
   };
-  const handleCreateReview = () => {};
+  const handleCreateReview = async () => {
+    try {
+      const res = await createReview({
+        rating: starReview,
+        comment: comment,
+        productId: productId,
+        userName: userInfo.username,
+        userId: userInfo._id,
+      });
+
+      if (res?.data?.status === "success") {
+        toast.success("Bạn đã tạo đánh giá thành công");
+      }
+      setOpenReview(false);
+
+      refetchProductDetailPage && refetchProductDetailPage();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleClose = () => setOpenReview(false);
   const TextFieldStyled = styled(Typography)(() => ({
     minWidth: "100px",

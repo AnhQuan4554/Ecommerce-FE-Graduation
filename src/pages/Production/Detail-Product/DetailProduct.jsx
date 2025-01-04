@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   AdditionalProductImages,
   AdditionalProductImagesItem,
+  ContainerCustomerReview,
   ContainerCustomStyled,
   NumberOrder,
   PriceItem,
@@ -11,11 +12,13 @@ import {
   ProductNameStyled,
   PromotionHeaderStyled,
   TypographyContentPromo,
+  WrapCommentAndRating,
   WrapInforSpecificationStyled,
   WrapProductImg,
   WrapProductInforStyled,
   WrapPromotion,
   WrapPromotionContent,
+  WrapReviewProduct,
 } from "./DetailProduct.styled";
 import { Box, Button, Grid2, TextField, Typography } from "@mui/material";
 import Slider from "react-slick";
@@ -30,6 +33,8 @@ import { formatCurrency } from "../../../utils/formatPrice";
 import RelatedBrandProducts from "./RelatedBrandProducts";
 import ModalShipping from "../../../components/common/modal-shipping/ModalShipping";
 import ReviewForm from "../../ProductBuy/ReviewForm";
+import StarIcon from "@mui/icons-material/Star";
+import { toast } from "react-toastify";
 
 var settings = {
   dots: true,
@@ -47,7 +52,7 @@ const DetailProduct = () => {
   const {
     currentData: productDetailData,
     isLoading,
-    refetch,
+    refetch: refetchProductDetailPage,
   } = useGetProductByIdQuery(id);
   const [productPrice, setProductPrice] = useState(
     productDetailData && productDetailData?.price
@@ -62,13 +67,15 @@ const DetailProduct = () => {
   useEffect(() => {
     setProductPrice(productDetailData?.price);
   }, [productDetailData?.price]);
-  console.log("openReview detail", openModal2);
+
   return (
     <div>
       <ContainerCustomStyled>
         <ProductNameStyled mt={"20px"} mb={"20px"}>
-          {productDetailData?.name}
+          {productDetailData?.name} ({productDetailData?.rating}
+          <StarIcon sx={{ color: "#e7e743" }} />)
         </ProductNameStyled>
+
         <Grid2 container spacing={3}>
           <Grid2 size={7}>
             <WrapProductInforStyled>
@@ -87,16 +94,43 @@ const DetailProduct = () => {
                 </Grid2>
               ))}
             </AdditionalProductImages>
-            <Box>
+            <WrapReviewProduct>
               <Button
                 variant="contained"
                 onClick={() => {
                   setOpenModal2(true);
                 }}
+                sx={{ marginBottom: "10px" }}
               >
                 Thêm đánh giá
               </Button>
-            </Box>
+              <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
+                {productDetailData?.reviews.map((item) => {
+                  console.log("rating", item?.rating);
+                  return (
+                    <ContainerCustomerReview key={item?._id}>
+                      <Typography>{item?.name}</Typography>
+                      <WrapCommentAndRating>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "4px",
+                          }}
+                        >
+                          {Array(item.rating)
+                            .fill("*")
+                            .map((star, index) => (
+                              <StarIcon key={index} sx={{ color: "yellow" }} />
+                            ))}
+                        </Box>
+                        <Typography>{item?.comment}</Typography>
+                      </WrapCommentAndRating>
+                    </ContainerCustomerReview>
+                  );
+                })}
+              </Box>
+            </WrapReviewProduct>
           </Grid2>
 
           <Grid2 size={5}>
@@ -118,14 +152,37 @@ const DetailProduct = () => {
                   </Grid2>
                 ))}
               </PriceList>
-              <TextField
-                sx={{ mb: "20px" }}
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                required
-                type="number"
-                label="Nhập số lượng mua"
-              />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  mb: "20px",
+                }}
+              >
+                <TextField
+                  value={quantity}
+                  onChange={(e) => {
+                    if (
+                      Number(e.target.value) >
+                      Number(productDetailData?.countInStock)
+                    ) {
+                      toast.warning(
+                        "Xin lỗi chúng tôi không đủ hàng trong kho"
+                      );
+                      return;
+                    }
+                    setQuantity(e.target.value);
+                  }}
+                  required
+                  type="number"
+                  label="Nhập số lượng mua"
+                  inputProps={{ min: 0 }}
+                />
+                <Typography sx={{ color: "red", fontSize: "20px" }}>
+                  Còn lại trong kho : {productDetailData?.countInStock}
+                </Typography>
+              </Box>
               <WrapPromotion>
                 <PromotionHeaderStyled>
                   <Box sx={{ width: "30px", height: "30px" }}>
@@ -199,7 +256,8 @@ const DetailProduct = () => {
       <ReviewForm
         openReview={openModal2}
         setOpenReview={setOpenModal2}
-        // productId={id}
+        productId={id}
+        refetchProductDetailPage={refetchProductDetailPage}
       />
     </div>
   );

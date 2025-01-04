@@ -115,3 +115,21 @@ export const AdditionalProductImagesItem = styled("img")(() => ({
   borderRadius: "6px",
   border: "1px solid black",
 }));
+// review
+export const WrapReviewProduct = styled(Box)(() => ({
+  marginTop: "10px",
+}));
+export const ContainerCustomerReview = styled(Box)(() => ({
+  display: "flex",
+  gap: "20px",
+  padding: "10px",
+  borderRadius: "20px",
+  border: "2px solid #cc0f35",
+  backgroundColor: "#ededed",
+  marginBottom: "10px",
+}));
+export const WrapCommentAndRating = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "column",
+  // gap: "20px",
+}));
