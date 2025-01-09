@@ -1,11 +1,24 @@
 import { useState } from "react";
-import { Button, Container, Grid2, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  Grid2,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useRegisterMutation } from "../../service/user";
 import { forMatDate } from "../../utils/formatDate";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const TextFieldStyled = styled(TextField)(() => ({
   width: "100%",
@@ -19,9 +32,31 @@ const Register = () => {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  console.log("password+++", password);
   const [register, { isLoading }] = useRegisterMutation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
+  const handleClickShowPassword = () => {
+    setShowPassword((show) => !show);
+  };
+  const handleClickShowPassword2 = () => {
+    setShowPassword2((show) => !show);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  const handleMouseDownPassword2 = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
+  const handleMouseUpPassword2 = (event) => {
+    event.preventDefault();
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -46,7 +81,12 @@ const Register = () => {
     <Container
       sx={{ display: "flex", justifyContent: "center", padding: "30px" }}
     >
-      <Grid2 container maxWidth={"800px"} spacing={2}>
+      <Grid2 container maxWidth={"600px"} spacing={2}>
+        <Grid2 size={12}>
+          <Typography textAlign={"center"} variant="h4">
+            Mời nhập thông tin đăng ký
+          </Typography>
+        </Grid2>
         <Grid2 size={12}>
           <TextFieldStyled
             value={username}
@@ -81,21 +121,72 @@ const Register = () => {
             label="Ngày sinh"
           />
         </Grid2>
+
         <Grid2 size={12}>
-          <TextFieldStyled
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            label="Nhập mật khẩu"
-          />
+          <FormControl
+            sx={{ m: 1, width: "100%", margin: "0" }}
+            variant="outlined"
+          >
+            <InputLabel htmlFor="outlined1">Nhập mật khẩu</InputLabel>
+            <OutlinedInput
+              id="outlined1"
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword
+                        ? "hide the password"
+                        : "display the password"
+                    }
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
         </Grid2>
         <Grid2 size={12}>
-          <TextFieldStyled
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            label="Nhập lại mật khẩu"
-          />
+          <FormControl
+            sx={{ m: 1, width: "100%", margin: "0" }}
+            variant="outlined"
+          >
+            <InputLabel htmlFor="outlined2">Nhập lại mật khẩu</InputLabel>
+            <OutlinedInput
+              id="outlined2"
+              type={showPassword2 ? "text" : "password"}
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword2
+                        ? "hide the password"
+                        : "display the password"
+                    }
+                    onClick={handleClickShowPassword2}
+                    onMouseDown={handleMouseDownPassword2}
+                    onMouseUp={handleMouseUpPassword2}
+                    edge="end"
+                  >
+                    {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
         </Grid2>
         <Grid2 size={12}>
           <Button

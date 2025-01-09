@@ -17,6 +17,8 @@ import {
   WrapStar,
 } from "./ProductCardStyled";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToFavorite } from "../../../redux/favoriteSlice";
 
 const ProductCard = ({
   reducePrice,
@@ -30,18 +32,15 @@ const ProductCard = ({
 }) => {
   const arrayStar = new Array(5).fill(1);
   const navigate = useNavigate();
-  const location = useLocation();
+  const dispatch = useDispatch();
+  const favorite = useSelector((state) => state.favorite?.favorite);
 
   const handleNavigate = () => {
-    const isInProductDetail = location.pathname.includes("/product-detail");
-    if (isInProductDetail) {
-      // Chỉ lấy phần trước `product-detail`
-      const newPath = location.pathname.split("/product-detail")[0];
-      navigate(`${newPath}/product-detail/${productId}`, { replace: true });
-    } else {
-      navigate(`product-detail/${productId}`, { replace: true });
-    }
+    const baseUrl = `/product-detail/${productId}`;
+    navigate(baseUrl, { replace: true });
   };
+  const isFavorite = favorite?.some((item) => item === productId);
+
   return (
     <ContainerProductCardStyled
       className={className ? className : ""}
@@ -69,11 +68,18 @@ const ProductCard = ({
           ))}
         </WrapStar>
         <WrapLike>
-          <Typography variant="h6" sx={{ fontSize: "12px", color: "#777" }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: "12px",
+            }}
+          >
             Yêu thích
           </Typography>
           <FavoriteIcon
             sx={{
+              color: isFavorite ? "red" : "",
+              // color: "red",
               width: "20px",
               height: "30px",
               marginLeft: "4px",
@@ -81,6 +87,10 @@ const ProductCard = ({
               "&:hover": {
                 color: "red",
               },
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              dispatch(addToFavorite(productId));
             }}
           />
         </WrapLike>

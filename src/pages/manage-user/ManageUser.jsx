@@ -26,21 +26,21 @@ const ManageUser = () => {
       headerName: "Email",
       description: "",
       editable: false,
-      width: 460,
+      width: 220,
     },
     {
       field: "phone",
       headerName: "Số điện thoại",
       description: "",
       editable: false,
-      width: 460,
+      width: 200,
     },
     {
       field: "action",
       headerName: "Hành động",
       description: "",
       editable: false,
-      width: 360,
+      width: 200,
       renderCell: (item) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>

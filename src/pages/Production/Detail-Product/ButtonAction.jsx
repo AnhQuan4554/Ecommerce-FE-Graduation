@@ -11,9 +11,9 @@ import imgDetail01 from "../../../assets/detail/imgDetail01.jpg";
 import imgDetail02 from "../../../assets/detail/imgDetail02.jpg";
 import imgDetail03 from "../../../assets/detail/imgDetail03.jpg";
 import imgDetail04 from "../../../assets/detail/imgDetail04.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../redux/cartSlice";
-
+import { toast } from "react-toastify";
 const arrImg = [imgDetail01, imgDetail02, imgDetail03, imgDetail04];
 
 const WrapBtnAction = styled(Box)(() => ({
@@ -41,9 +41,16 @@ const OrderBtnStyled = styled(Button)(() => ({
 
 const ButtonAction = ({ setOpenModal, productDetailData }) => {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
+
   const handleAddToCart = () => {
-    console.log("productDetailData++", productDetailData);
     dispatch(addToCart(productDetailData));
+    toast.success(
+      `Bạn đã thêm ${productDetailData?.quantity} ${productDetailData?.name} vào giỏ hàng`,
+      {
+        autoClose: 1000,
+      }
+    );
   };
   return (
     <WrapBtnAction>
@@ -51,6 +58,12 @@ const ButtonAction = ({ setOpenModal, productDetailData }) => {
         <Grid2 size={10}>
           <BuyNowBtnStyled
             onClick={() => {
+              if (!userInfo) {
+                toast.error("Bạn cần đăng nhập để mua hàng", {
+                  autoClose: 1000,
+                });
+                return;
+              }
               setOpenModal(true);
             }}
           >

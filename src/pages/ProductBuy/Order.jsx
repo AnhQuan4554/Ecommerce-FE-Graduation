@@ -44,16 +44,15 @@ const Order = () => {
     setSelectedOrder(data);
   }, [rowSelectionModel]);
 
-  const {
-    currentData: orderList,
-    isLoading,
-    refetch,
-  } = useGetOrdersQuery({
-    skip: !isAdmin,
-  }) ||
-  useGetMyOrdersQuery(userId, {
-    skip: isAdmin || !userId,
-  });
+  let queryResult;
+  if (isAdmin) {
+    queryResult = useGetOrdersQuery();
+  } else {
+    queryResult = useGetMyOrdersQuery(userId);
+  }
+
+  const { currentData: orderList, isLoading, refetch } = queryResult || {};
+
   // flat data respone
   useEffect(() => {
     const flatData =
@@ -82,7 +81,6 @@ const Order = () => {
       field: "createdAt",
       headerName: "Ngày tạo",
       width: 120,
-      editable: true,
       valueGetter: (value) => {
         return value && formatDateFromString(value);
       },
@@ -154,7 +152,7 @@ const Order = () => {
     {
       field: "paymentMethod",
       headerName: "Phương thức thanh toán",
-      width: 200,
+      width: 150,
     },
     {
       field: "shippingAddress",
@@ -176,8 +174,7 @@ const Order = () => {
       field: "action",
       headerName: "Chỉnh sửa",
       sortable: false,
-      width: 150,
-      editable: true,
+      width: 200,
       renderCell: (item) => {
         const { isDelivered } = item?.row;
         if (isAdmin) {
@@ -207,20 +204,25 @@ const Order = () => {
               display: "flex",
               alignItems: "center",
               height: "100%",
-              backgroundColor: "#7cdcb4",
             }}
           >
             {isDelivered === 2 ? (
-              <Button
-                disabled={!rowSelectionModel.includes(item.id)}
-                onClick={handleOpenDeleteOrder}
+              <Typography
+                sx={{
+                  width: "100%",
+                  backgroundColor: "#7cdcb4",
+                  padding: "4px",
+                  borderRadius: "10px",
+                }}
+                textAlign={"center"}
               >
                 Đã nhận được hàng
-              </Button>
+              </Typography>
             ) : (
               <Button
+                sx={{ width: "100%", textAlign: "center" }}
                 disabled={
-                  !rowSelectionModel.includes(item.id) && isDelivered !== 0
+                  !rowSelectionModel.includes(item.id) || isDelivered !== 0
                 }
                 onClick={handleOpenDeleteOrder}
               >
@@ -266,10 +268,11 @@ const Order = () => {
       // }, 1000);
     }
   };
+  console.log("selectedOrder", `${selectedOrder?.user?.username}`);
   return (
     <ContainerAdmin>
       <Typography variant="h3" fontWeight={700} mb={"20px"}>
-        Đơn hàng của bạn
+        {isAdmin ? "Tất cả đơn hàng" : "Đơn hàng của bạn"}
       </Typography>
       {isLoading ? (
         <CircularProgress
@@ -301,7 +304,7 @@ const Order = () => {
       <ModalConfirm
         open={isOpenConfirm}
         setOpen={setIsOpenConfirm}
-        message={`Bạn có chắc chắn muốn xóa đơn của ${selectedOrder?.user?.username}`}
+        message={`Bạn có chắc chắn muốn xóa đơn hàng này`}
         actionConfirm={handleDeleteOrder}
       />
     </ContainerAdmin>

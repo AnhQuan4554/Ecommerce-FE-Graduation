@@ -168,7 +168,10 @@ const DetailProduct = () => {
                       Number(productDetailData?.countInStock)
                     ) {
                       toast.warning(
-                        "Xin lỗi chúng tôi không đủ hàng trong kho"
+                        "Xin lỗi chúng tôi không đủ hàng trong kho",
+                        {
+                          autoClose: 1000,
+                        }
                       );
                       return;
                     }

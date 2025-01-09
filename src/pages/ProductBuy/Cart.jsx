@@ -7,6 +7,8 @@ import ImgProductTable from "../../components/common/admin/ImgProduct";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { removeFromCart } from "../../redux/cartSlice";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
@@ -14,7 +16,12 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart?.cartItems);
-
+  const handleDeleteProduct = (item) => {
+    dispatch(removeFromCart(item?._id));
+    toast.success(`Bạn đã xóa ${item?.quantity} ${item?.name} khỏi giỏ hàng`, {
+      autoClose: 1000,
+    });
+  };
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },
     {
@@ -22,7 +29,7 @@ const Cart = () => {
       headerName: "Ảnh sản phẩm",
       sortable: false,
       width: 200,
-      editable: true,
+
       renderCell: (params) => {
         return params && <ImgProductTable imgUrl={params.value[0]} />;
       },
@@ -66,7 +73,7 @@ const Cart = () => {
       headerName: "Chỉnh sửa",
       sortable: false,
       width: 220,
-      editable: true,
+
       renderCell: (item) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
@@ -80,7 +87,7 @@ const Cart = () => {
             </Button>
             <Button
               disabled={!rowSelectionModel.includes(item.id)}
-              // onClick={handleDeleteProduct}
+              onClick={() => handleDeleteProduct(item?.row)}
             >
               <DeleteIcon sx={{ width: "30px", height: "30px" }} />
             </Button>
@@ -104,7 +111,7 @@ const Cart = () => {
         </Typography>
         <Box>
           <ContainerBtnAction>
-            <Button
+            {/* <Button
               // onClick={handleDeleteProduct}
               variant="contained"
               disabled={rowSelectionModel?.length === 0}
@@ -123,8 +130,8 @@ const Cart = () => {
               }}
             >
               Mua sản phẩm
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               // onClick={handleDeleteProduct}
               disabled={rowSelectionModel?.length === 0}
               sx={{
@@ -142,7 +149,7 @@ const Cart = () => {
               }}
             >
               Xóa
-            </Button>
+            </Button> */}
           </ContainerBtnAction>
         </Box>
 

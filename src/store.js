@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./redux/userSlice";
 import orderReducer from "./redux/orderSlice";
 import cartReducer from "./redux/cartSlice";
+import favoriteReducer from "./redux/favoriteSlice";
 import { userApi } from "./service/user";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { productApi } from "./service/product";
@@ -13,6 +14,7 @@ export const store = configureStore({
     user: userReducer,
     order: orderReducer,
     cart: cartReducer,
+    favorite: favoriteReducer,
     [userApi.reducerPath]: userApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,

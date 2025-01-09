@@ -14,7 +14,9 @@ const WrapProductFilter = styled(Box)(() => ({
 const HeaderCondition = styled(Grid2)(() => ({
   marginBottom: "20px",
 }));
-const ProductList = styled(Grid2)(() => ({}));
+const ProductList = styled(Grid2)(() => ({
+  minHeight: "400px",
+}));
 
 const ProductFilter = () => {
   const categoriesQuery = useFetchCategoriesQuery();

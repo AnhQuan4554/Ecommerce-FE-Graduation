@@ -27,6 +27,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../../service/user";
 import { logout } from "../../redux/userSlice";
+import { toast } from "react-toastify";
 
 const pages = [
   "Đơn hàng",
@@ -38,13 +39,14 @@ const pages = [
 const pagesLink = {
   "Đơn hàng": "order",
   "Giỏ hàng": "cart",
-  "Sản phẩm yêu thích": "favourite-product",
+  "Sản phẩm yêu thích": "favorite-product",
   "Hỗ trợ": "support",
   "Liên hệ": "contact",
 };
 
 const convertLink = {
   "Tài khoản": "profile",
+  "Quản lí khách": "users",
   "Thống kê cửa hàng": "dashboard",
   "Sản phẩm": "products",
   "Phân loại": "category",
@@ -128,8 +130,46 @@ const Header = () => {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages?.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                <MenuItem
+                  key={page}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                  }}
+                >
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      my: 2,
+                      color: " rgb(43, 43, 48)",
+                      display: "block",
+                      margin: "0 8px",
+                      "& a": {
+                        textDecoration: "none",
+                        color: "black",
+                      },
+                    }}
+                  >
+                    <Link
+                      to={pagesLink[page]}
+                      onClick={(e) => {
+                        if (page === "Đơn hàng" && !userInfo) {
+                          toast.error("Bạn cần đăng nhập để xem đơn hàng", {
+                            autoClose: 1000,
+                          });
+                          e.preventDefault();
+                          return;
+                        }
+                      }}
+                      sx={{
+                        backgroundColor: "#ea4750",
+                        padding: "10px",
+                        marginRight: "10px",
+                      }}
+                    >
+                      {page}
+                    </Link>
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>
@@ -157,6 +197,15 @@ const Header = () => {
               >
                 <Link
                   to={pagesLink[page]}
+                  onClick={(e) => {
+                    if (page === "Đơn hàng" && !userInfo) {
+                      toast.error("Bạn cần đăng nhập để xem đơn hàng", {
+                        autoClose: 1000,
+                      });
+                      e.preventDefault();
+                      return;
+                    }
+                  }}
                   sx={{
                     backgroundColor: "#ea4750",
                     padding: "10px",
