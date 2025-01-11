@@ -58,7 +58,7 @@ const PieChartCustom = () => {
       {isLoading ? (
         <CircularProgress size={60} />
       ) : (
-        <>
+        <Box sx={{ display: "flex", justifyContent: "space-around" }}>
           <WrapPieChartItem>
             <Typography variant="h4">Thống kê điện thoại bán được</Typography>
             <PieChart
@@ -67,8 +67,9 @@ const PieChartCustom = () => {
                   data: (productPhone && productPhone) || [],
                 },
               ]}
-              width={1000}
+              width={500}
               height={400}
+              slotProps={{ legend: { hidden: true } }}
             />
           </WrapPieChartItem>
           <WrapPieChartItem>
@@ -80,11 +81,12 @@ const PieChartCustom = () => {
                   data: (productLaptop && productLaptop) || [],
                 },
               ]}
-              width={1000}
+              width={500}
               height={400}
+              slotProps={{ legend: { hidden: true } }}
             />
           </WrapPieChartItem>
-        </>
+        </Box>
       )}
     </WrapPieChartCustom>
   );

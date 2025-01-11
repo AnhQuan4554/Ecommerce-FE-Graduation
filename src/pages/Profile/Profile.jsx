@@ -1,3 +1,4 @@
+import { DatePicker } from "@mui/x-date-pickers";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
@@ -15,6 +16,7 @@ import {
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 
 const Profile = () => {
   const userId = useSelector((state) => state.user.userInfo._id);
@@ -43,8 +45,15 @@ const Profile = () => {
   }, [currentData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (e.target) {
+      const { name, value } = e.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        dateOfBirth: e.format("YYYY-MM-DD"),
+      }));
+    }
   };
 
   const isDataChanged = () => {
@@ -55,7 +64,7 @@ const Profile = () => {
       formData.dateOfBirth !== currentData.dateOfBirth
     );
   };
-
+  console.log("formData", formData);
   const handleModalClose = () => setIsModalOpen(false);
 
   const handleUpdateProfile = async () => {
@@ -135,7 +144,7 @@ const Profile = () => {
             readOnly: !isEditing,
           },
         }}
-        disabled={!isEditing}
+        disabled={true}
       />
       <TextField
         label="Số điện thoại"
@@ -151,18 +160,13 @@ const Profile = () => {
         }}
         disabled={!isEditing}
       />
-      <TextField
-        label="Ngày sinh"
+
+      <DatePicker
         name="dateOfBirth"
-        value={formData.dateOfBirth}
+        value={dayjs(formData.dateOfBirth)}
         onChange={handleChange}
-        fullWidth
-        margin="normal"
-        slotProps={{
-          input: {
-            readOnly: !isEditing,
-          },
-        }}
+        sx={{ width: "100%" }}
+        label="Ngày sinh"
         disabled={!isEditing}
       />
       <Box display="flex" gap={2} mt={2}>

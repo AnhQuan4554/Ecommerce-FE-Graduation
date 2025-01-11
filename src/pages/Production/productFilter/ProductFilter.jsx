@@ -38,7 +38,7 @@ const ProductFilter = () => {
         label: item.name,
         value: item._id,
       }));
-      setCategoryList([{ label: "Tất cả", value: 0 }, ...data]);
+      setCategoryList([{ label: "Tất cả", value: "" }, ...data]);
     }
   }, [categoriesQuery.currentData]);
   const handleSearch = async () => {
@@ -103,9 +103,9 @@ const ProductFilter = () => {
           <Autocomplete
             disablePortal
             options={categoryList}
-            onChange={(e, newValue) =>
-              setCondition({ ...condition, category: newValue.value })
-            }
+            onChange={(e, newValue) => {
+              setCondition({ ...condition, category: newValue.value });
+            }}
             sx={{ width: 300, mb: "20px" }}
             renderInput={(params) => (
               <TextField {...params} label="Chọn kiểu sản phẩm" />

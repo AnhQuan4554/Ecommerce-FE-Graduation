@@ -28,8 +28,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: "20px",
-  height: "100vh",
-  overflow: "scroll",
+  height: "90vh",
 };
 
 const TextFieldStyled = styled(TextField)(() => ({
@@ -56,10 +55,25 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
   const [listImgUpload, setListImgUpload] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [optionsState, setOptionsState] = useState([]);
-
   const [uploadProductImage] = useUploadProductImageMutation();
   const [createProduct, { reset }] = useCreateProductMutation();
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    // clear data
+    setNewProduct({
+      name: "",
+      image: [],
+      brand: "",
+      quantitySold: 0,
+      quantity: "",
+      category: "",
+      description: "",
+      price: "",
+      countInStock: 0,
+      options: null,
+    });
+    setNumberOfOptions(null);
+    setOpen(false);
+  };
   const categoriesQuery = useFetchCategoriesQuery();
 
   const handleOptionChange = (index, field, value) => {
@@ -129,7 +143,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
       const { data } = await createProduct(productData);
 
       if (data.error) {
-        toast.error("Product create failed. Try Again.");
+        toast.error(data.error);
       } else {
         toast.success(`${data.name} is created`);
         reset();
@@ -138,7 +152,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Product create failed. Try Again.");
+      toast.error("Có lỗi khi tạo sản phẩm");
     }
   };
 
@@ -167,138 +181,145 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography variant="h4" mb={"30px"}>
-          Thêm sản phẩm mới
-        </Typography>
-        <TextFieldStyled
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, name: e.target.value })
-          }
-          required
-          label="Nhập tên sản phẩm"
-        />
-        <Button
-          component="label"
-          sx={{
-            mt: "10px",
-            mb: "10px",
-            width: "90%",
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-        >
-          <Typography mr={"30px"}>Hãy chọn ảnh sản phẩm</Typography>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onClick={(event) => {
-              setImageUrl([]);
-              event.target.value = null;
-            }}
-            onChange={(e) => {
-              setListImgUpload(e.target.files);
-              handleOnChangeImage(e);
-            }}
+        <Box sx={{ width: "100%", height: "100%", overflow: "auto" }}>
+          <Typography variant="h4" mb={"30px"}>
+            Thêm sản phẩm mới
+          </Typography>
+          <TextFieldStyled
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, name: e.target.value })
+            }
+            required
+            label="Nhập tên sản phẩm"
           />
-        </Button>
-
-        {imageUrl && (
-          <Box
+          <Button
+            component="label"
             sx={{
+              mt: "10px",
+              mb: "10px",
               width: "90%",
-              gap: 4,
-              maxHeight: "40px",
               display: "flex",
-              mb: "40px",
+              justifyContent: "flex-start",
             }}
           >
-            {imageUrl?.length > 0 &&
-              imageUrl?.map((url, index) => (
-                <img
-                  style={{
-                    objectFit: "cover",
-                    height: "100%",
-                    maxWidth: "40px",
-                  }}
-                  key={index}
-                  src={url}
-                  alt="product"
+            <Typography mr={"30px"}>Hãy chọn ảnh sản phẩm</Typography>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onClick={(event) => {
+                setImageUrl([]);
+                event.target.value = null;
+              }}
+              onChange={(e) => {
+                setListImgUpload(e.target.files);
+                handleOnChangeImage(e);
+              }}
+            />
+          </Button>
+
+          {imageUrl && (
+            <Box
+              sx={{
+                width: "90%",
+                gap: 4,
+                maxHeight: "40px",
+                display: "flex",
+                mb: "40px",
+              }}
+            >
+              {imageUrl?.length > 0 &&
+                imageUrl?.map((url, index) => (
+                  <img
+                    style={{
+                      objectFit: "cover",
+                      height: "100%",
+                      maxWidth: "40px",
+                    }}
+                    key={index}
+                    src={url}
+                    alt="product"
+                  />
+                ))}
+            </Box>
+          )}
+
+          <Autocomplete
+            disablePortal
+            options={brandData}
+            loading={categoriesQuery.isLoading}
+            onChange={(e, newValue) =>
+              setNewProduct({ ...newProduct, brand: newValue.value })
+            }
+            sx={{ width: 300, mb: "20px" }}
+            renderInput={(params) => (
+              <TextField {...params} label="Chọn hãng" />
+            )}
+          />
+          <Autocomplete
+            disablePortal
+            options={categoryList}
+            onChange={(e, newValue) =>
+              setNewProduct({ ...newProduct, category: newValue.value })
+            }
+            sx={{ width: 300, mb: "20px" }}
+            renderInput={(params) => (
+              <TextField {...params} label="Chọn loại" />
+            )}
+          />
+          <TextFieldStyled
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, description: e.target.value })
+            }
+            required
+            label="Nhập mô tả"
+          />
+          <TextFieldStyled
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, price: e.target.value })
+            }
+            required
+            type="number"
+            label="Nhập giá"
+          />
+          <TextFieldStyled
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, countInStock: e.target.value })
+            }
+            required
+            type="number"
+            label="Nhập số lượng nhập về"
+          />
+          <TextFieldStyled
+            value={numberOfOptions}
+            onChange={(e) => setNumberOfOptions(e.target.value)}
+            required
+            type="number"
+            label="Nhập số lượng cấu hình"
+          />
+          {numberOfOptions &&
+            Array.from({ length: numberOfOptions })?.map((_, index) => (
+              <div key={index}>
+                <TextFieldStyled
+                  onChange={(e) =>
+                    handleOptionChange(index, "name", e.target.value)
+                  }
+                  required
+                  label={`Nhập tên cấu hình ${index + 1}`}
                 />
-              ))}
-          </Box>
-        )}
+                <TextFieldStyled
+                  onChange={(e) =>
+                    handleOptionChange(index, "price", Number(e.target.value))
+                  }
+                  type="number"
+                  required
+                  label={`Nhập giá cho cấu hình ${index + 1}`}
+                />
+              </div>
+            ))}
 
-        <Autocomplete
-          disablePortal
-          options={brandData}
-          loading={categoriesQuery.isLoading}
-          onChange={(e, newValue) =>
-            setNewProduct({ ...newProduct, brand: newValue.value })
-          }
-          sx={{ width: 300, mb: "20px" }}
-          renderInput={(params) => <TextField {...params} label="Chọn hãng" />}
-        />
-        <Autocomplete
-          disablePortal
-          options={categoryList}
-          onChange={(e, newValue) =>
-            setNewProduct({ ...newProduct, category: newValue.value })
-          }
-          sx={{ width: 300, mb: "20px" }}
-          renderInput={(params) => <TextField {...params} label="Chọn loại" />}
-        />
-        <TextFieldStyled
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, description: e.target.value })
-          }
-          required
-          label="Nhập mô tả"
-        />
-        <TextFieldStyled
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, price: e.target.value })
-          }
-          required
-          type="number"
-          label="Nhập giá"
-        />
-        <TextFieldStyled
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, countInStock: e.target.value })
-          }
-          required
-          type="number"
-          label="Nhập số lượng nhập về"
-        />
-        <TextFieldStyled
-          onChange={(e) => setNumberOfOptions(e.target.value)}
-          required
-          type="number"
-          label="Nhập số lượng cấu hình"
-        />
-        {numberOfOptions &&
-          Array.from({ length: numberOfOptions })?.map((_, index) => (
-            <div key={index}>
-              <TextFieldStyled
-                onChange={(e) =>
-                  handleOptionChange(index, "name", e.target.value)
-                }
-                required
-                label={`Nhập tên cấu hình ${index + 1}`}
-              />
-              <TextFieldStyled
-                onChange={(e) =>
-                  handleOptionChange(index, "price", Number(e.target.value))
-                }
-                type="number"
-                required
-                label={`Nhập giá cho cấu hình ${index + 1}`}
-              />
-            </div>
-          ))}
-
-        <Button onClick={handleSubmit}>Tạo sản phẩm mới</Button>
+          <Button onClick={handleSubmit}>Tạo sản phẩm mới</Button>
+        </Box>
       </Box>
     </Modal>
   );

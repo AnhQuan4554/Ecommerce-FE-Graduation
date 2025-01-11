@@ -33,11 +33,10 @@ const FavoriteProducts = () => {
       const filteredFavorites = listProduct.filter((product) =>
         favorite.includes(product._id)
       );
-      console.log("listProduct", listProduct);
-      console.log("filteredFavorites", filteredFavorites);
+
       setFavoriteProducts(filteredFavorites);
     }
-  }, [listProduct]);
+  }, [listProduct, favorite]);
 
   return (
     <Box sx={{ padding: "20px 50px", minHeight: "600px" }}>

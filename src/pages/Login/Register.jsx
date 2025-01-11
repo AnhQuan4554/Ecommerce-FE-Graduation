@@ -68,7 +68,7 @@ const Register = () => {
         password,
         confirmPassword,
       }).unwrap();
-      toast.success("Đăng kí thành công");
+      toast.success("Đăng kí thành công", { autoClose: 1000 });
       setTimeout(() => {
         navigate("/login");
       }, 1000);
@@ -114,7 +114,6 @@ const Register = () => {
         <Grid2 size={12}>
           <DatePicker
             onChange={(newValue) => {
-              console.log("new value", newValue);
               setDateOfBirth(newValue);
             }}
             sx={{ width: "100%" }}

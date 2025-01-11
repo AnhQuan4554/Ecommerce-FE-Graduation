@@ -84,7 +84,7 @@ const Payment = () => {
   const handleDelivery = async () => {
     // handle update status Order
     if (orderInfo?.paymentMethod === "Cash") {
-      toast.success("Đặt hàng thành công");
+      toast.success("Đặt hàng thành công", { autoClose: 1000 });
       setTimeout(() => {
         navigate(`/order`);
       }, 1000);
@@ -94,7 +94,7 @@ const Payment = () => {
         statusDelivery: 1,
       });
       if (response?.data?.status === "success") {
-        toast.success("Đặt hàng thành công");
+        toast.success("Đặt hàng thành công", { autoClose: 1000 });
         setTimeout(() => {
           navigate(`/order`);
         }, 1000);
