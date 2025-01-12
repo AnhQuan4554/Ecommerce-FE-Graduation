@@ -57,15 +57,25 @@ const DetailProduct = () => {
   const [productPrice, setProductPrice] = useState(
     productDetailData && productDetailData?.price
   );
+  // const [state, setstate] = useState(initialState)
   const [quantity, setQuantity] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
   // const [openReview, setOpenReview] = useState(true);
-  const handleChangeOptions = (price) => {
+  const [indexPro, setIndexPro] = useState("");
+  const handleChangeOptions = (price, index) => {
     setProductPrice(price);
+    setIndexPro(index);
   };
   useEffect(() => {
     setProductPrice(productDetailData?.price);
+    const indexSelected = productDetailData?.options.findIndex(
+      (item) => item?.price == productDetailData?.price
+    );
+
+    if (!indexPro && indexSelected !== -1) {
+      setIndexPro(indexSelected);
+    }
   }, [productDetailData?.price]);
 
   return (
@@ -139,8 +149,10 @@ const DetailProduct = () => {
                 {productDetailData?.options.map((item, index) => (
                   <Grid2 key={index} size={4}>
                     <PriceItem
-                      onClick={() => handleChangeOptions(item?.price)}
-                      ishighlighted={item.price == productPrice}
+                      onClick={() => handleChangeOptions(item?.price, index)}
+                      ishighlighted={
+                        item.price == productPrice && index === indexPro
+                      }
                     >
                       <Typography sx={{ fontWeight: "500", fontSize: "18px" }}>
                         {item.name}

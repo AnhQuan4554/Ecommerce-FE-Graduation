@@ -29,4 +29,7 @@ export const BrandList = styled(Box)(() => ({
   whiteSpace: "nowrap",
   marginRight: "10px",
   cursor: "pointer",
+  "&.selected": {
+    backgroundColor: "#f9aaaa",
+  },
 }));

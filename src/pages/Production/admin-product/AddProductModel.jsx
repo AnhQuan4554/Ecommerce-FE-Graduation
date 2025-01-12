@@ -145,7 +145,7 @@ const AddProductModel = ({ open, setOpen, refetch }) => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        toast.success(`${data.name} is created`);
+        toast.success(`${data.name} được tạo`);
         reset();
         handleClose();
         await refetch();

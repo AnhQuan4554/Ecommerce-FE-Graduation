@@ -82,6 +82,7 @@ const RelatedBrandProducts = ({ brand }) => {
                     description={item?.description}
                     price={item?.price}
                     oldPrice={item?.oldPrice}
+                    rating={item?.rating}
                   />
                 ))}
             </Slider>

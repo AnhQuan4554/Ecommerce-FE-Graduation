@@ -19,12 +19,29 @@ import DashBoard from "./pages/dashboard/DashBoard";
 import ProductFilter from "./pages/Production/productFilter/ProductFilter";
 import { Favorite } from "@mui/icons-material";
 import FavoriteProducts from "./pages/ProductBuy/favorite";
+import { Box, CircularProgress } from "@mui/material";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route
+        path="/admin/logout"
+        element={
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              height: "80vh",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress size={100} />
+          </Box>
+        }
+      />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/payment" element={<Payment />} />

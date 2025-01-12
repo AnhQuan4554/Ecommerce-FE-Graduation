@@ -29,8 +29,8 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: "20px",
-  height: "100vh",
-  overflow: "scroll",
+  height: "95vh",
+  overflow: "auto",
 };
 const TextFieldStyled = styled(TextField)(() => ({
   width: "90%",
@@ -67,7 +67,6 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("currentData when submit++", productCurrently);
       const productData = new FormData();
 
       productData.append("name", productCurrently.name);
@@ -83,7 +82,7 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
       if (data.error) {
         toast.error("Lỗi khi cập nhật sản phẩm");
       } else {
-        toast.success(`${data.name} được tạo`);
+        toast.success(`Cập nhật thành không`);
         refetch();
         handleClose();
         await refetch();
@@ -103,10 +102,11 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography variant="h4" mb={"30px"}>
+          <Typography variant="h4" sx={{ mb: "30px" }}>
             Cập nhật sản phẩm
           </Typography>
           <TextFieldStyled
+            sx={{ mb: "30px" }}
             defaultValue={productCurrently?.name}
             onChange={(e) =>
               setProductCurrently({ ...productCurrently, name: e.target.value })
@@ -128,7 +128,7 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
                 brand: newValue.value,
               })
             }
-            sx={{ width: 300, mb: "20px" }}
+            sx={{ width: 300, mb: "30px" }}
             renderInput={(params) => (
               <TextField {...params} label="Chọn hãng" />
             )}
@@ -153,6 +153,7 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
             )}
           />
           <TextFieldStyled
+            sx={{ mb: "30px" }}
             defaultValue={productCurrently?.description}
             onChange={(e) =>
               setProductCurrently({
@@ -164,6 +165,7 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
             label="Nhập mô tả"
           />
           <TextFieldStyled
+            sx={{ mb: "30px" }}
             defaultValue={productCurrently?.price}
             onChange={(e) =>
               setProductCurrently({
@@ -176,6 +178,7 @@ const EditProduct = ({ open, setOpen, refetchGetList, id }) => {
             label="Nhập giá"
           />
           <TextFieldStyled
+            sx={{ mb: "30px" }}
             defaultValue={productCurrently?.countInStock}
             onChange={(e) =>
               setProductCurrently({

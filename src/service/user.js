@@ -46,6 +46,18 @@ export const userApi = createApi({
         body: data,
       }),
     }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    makeAdmin: builder.mutation({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}/make-admin`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -56,4 +68,6 @@ export const {
   useGetProfileQuery,
   useUpdateProfileMutation,
   useGetAllUserQuery,
+  useDeleteUserMutation,
+  useMakeAdminMutation,
 } = userApi;

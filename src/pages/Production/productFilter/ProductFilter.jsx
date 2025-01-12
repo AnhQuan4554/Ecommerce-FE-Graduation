@@ -155,6 +155,7 @@ const ProductFilter = () => {
                 description={item.description}
                 price={item.price}
                 oldPrice={item.oldPrice}
+                rating={item?.rating}
               />
             </Grid2>
           ))}

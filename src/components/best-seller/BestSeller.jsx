@@ -13,7 +13,10 @@ const ContainerBestSeller = styled(Box)(() => ({
 }));
 
 const BestSeller = () => {
-  const { currentData, isLoading } = useGetTopProductsQuery({ typeProduct: 1 });
+  const { currentData, isLoading } = useGetTopProductsQuery({
+    typeProduct: "",
+  });
+  console.log("currentData", currentData);
   return (
     <Box sx={{ padding: "0 50px" }}>
       <ContainerBestSeller>
@@ -40,6 +43,7 @@ const BestSeller = () => {
                   description={item?.description}
                   price={item?.price}
                   oldPrice={item?.oldPrice > 0 && item?.oldPrice}
+                  rating={item?.rating}
                 />
               </Grid2>
             ))}

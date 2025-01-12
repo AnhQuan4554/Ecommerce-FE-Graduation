@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FeaturedHeader from "./FeaturedHeader";
 import { ContainerFeatured } from "./FeaturedProductStyled";
 import { Grid2 } from "@mui/material";
@@ -10,11 +10,13 @@ const FeaturedPhone = () => {
     typeProduct: 0,
     limitProduct: 10,
   });
+  const [brand, setBrand] = useState("0");
   return (
     <ContainerFeatured>
       <FeaturedHeader
         headerTitle={"ĐIỆN THOẠI NỔI BẬT NHẤT"}
         brandList={brandListPhone}
+        setBrand={setBrand}
       />
       <Grid2 container spacing={2}>
         {topPhoneData &&
@@ -28,6 +30,7 @@ const FeaturedPhone = () => {
                 description={item.description}
                 price={item.price}
                 oldPrice={item.oldPrice}
+                rating={item?.rating}
               />
             </Grid2>
           ))}

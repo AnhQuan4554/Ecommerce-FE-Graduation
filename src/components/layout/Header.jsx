@@ -40,8 +40,8 @@ const pagesLink = {
   "Đơn hàng": "order",
   "Giỏ hàng": "cart",
   "Sản phẩm yêu thích": "favorite-product",
-  "Hỗ trợ": "support",
-  "Liên hệ": "contact",
+  "Hỗ trợ": "",
+  "Liên hệ": "",
 };
 
 const convertLink = {
@@ -63,7 +63,14 @@ const Header = () => {
 
   const settings = React.useMemo(() => {
     return userInfo?.isAdmin
-      ? ["Tài khoản", "Thống kê cửa hàng", "Sản phẩm", "Phân loại", "Đăng xuất"]
+      ? [
+          "Tài khoản",
+          "Quản lí khách",
+          "Thống kê cửa hàng",
+          "Sản phẩm",
+          "Phân loại",
+          "Đăng xuất",
+        ]
       : ["Tài khoản", "Đăng xuất"];
   }, [userInfo?.isAdmin]);
   const handleOpenNavMenu = (event) => {

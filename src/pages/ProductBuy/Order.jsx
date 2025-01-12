@@ -250,6 +250,7 @@ const Order = () => {
       const response = await deleteOrder(rowSelectionModel[0]);
       if (response.data.status === "success") {
         refetch();
+        toast.success("Xóa thành công", { autoClose: 1000 });
       }
     } catch (error) {
       console.log("delete order err", error);

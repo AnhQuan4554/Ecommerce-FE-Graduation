@@ -29,8 +29,10 @@ const ProductCard = ({
   oldPrice,
   productId,
   className,
+  rating = 0,
 }) => {
-  const arrayStar = new Array(5).fill(1);
+  const arrayStar = new Array(rating ? Math.round(Number(rating)) : 5).fill(1);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const favorite = useSelector((state) => state.favorite?.favorite);
@@ -52,10 +54,12 @@ const ProductCard = ({
       </WrapImg>
       <ProductNameStyled variant="h3">{productName}</ProductNameStyled>
       <Box sx={{ display: "flex" }}>
-        <PropductPrice>{price} đ</PropductPrice>
-        {oldPrice && Number(oldPrice) > 0 && (
-          <PropductPrice oldPrice={true}>{oldPrice} đ</PropductPrice>
-        )}
+        <PropductPrice>{price?.toLocaleString()} đ</PropductPrice>
+        {oldPrice
+          ? Number(oldPrice) > 0 && (
+              <PropductPrice oldPrice={true}>{oldPrice} đ</PropductPrice>
+            )
+          : ""}
       </Box>
       <DescriptionStyled>{description}</DescriptionStyled>
       <FooterProductCard>

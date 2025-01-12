@@ -137,5 +137,19 @@ export const dataFakeLaptop = [
     price: 2000,
   },
 ];
-export const brandListPhone = ["Apple", "Samsung", "Xiaomi", "Oppo", "Vivo"];
-export const brandListLaptop = ["Macbook", "Asus", "MSI", "Lenovo", "Acer"];
+export const brandListPhone = [
+  "Tất cả",
+  "Apple",
+  "Samsung",
+  "Xiaomi",
+  "Oppo",
+  "Vivo",
+];
+export const brandListLaptop = [
+  "Tất cả",
+  "Macbook",
+  "Asus",
+  "MSI",
+  "Lenovo",
+  "Acer",
+];

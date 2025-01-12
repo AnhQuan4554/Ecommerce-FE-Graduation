@@ -132,7 +132,7 @@ const AdminProductList = () => {
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 500 }}>
-          {"Product Lists"}
+          {"Danh sách sản phẩm"}
         </Typography>
         <Box>
           <ContainerBtnAction>

@@ -14,7 +14,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: "20px",
-  height: "20vh",
+  height: "30vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",

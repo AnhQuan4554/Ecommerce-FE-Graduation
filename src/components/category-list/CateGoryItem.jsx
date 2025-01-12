@@ -22,7 +22,9 @@ const CateGoryItem = ({
     <WrapCategoryItemStyled>
       <ContainerContentStyled>
         <NameCategoryStyled variant="h4">{categoryName}</NameCategoryStyled>
-        <Typography sx={{ maxWidth: "350px" }}>{descripstion}</Typography>
+        <Typography variant="h5" sx={{ maxWidth: "350px" }}>
+          {descripstion}
+        </Typography>
         <Typography>
           <Link>{linkCategory}</Link>
         </Typography>
